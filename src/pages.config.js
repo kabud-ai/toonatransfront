@@ -8,6 +8,11 @@ import Suppliers from './pages/Suppliers';
 import PurchaseOrders from './pages/PurchaseOrders';
 import Equipment from './pages/Equipment';
 import MaintenanceOrders from './pages/MaintenanceOrders';
+import Warehouses from './pages/Warehouses';
+import Sites from './pages/Sites';
+import UserManagement from './pages/UserManagement';
+import Settings from './pages/Settings';
+import ProductionPlanning from './pages/ProductionPlanning';
 import __Layout from './Layout.jsx';
 
 
@@ -22,6 +27,11 @@ export const PAGES = {
     "PurchaseOrders": PurchaseOrders,
     "Equipment": Equipment,
     "MaintenanceOrders": MaintenanceOrders,
+    "Warehouses": Warehouses,
+    "Sites": Sites,
+    "UserManagement": UserManagement,
+    "Settings": Settings,
+    "ProductionPlanning": ProductionPlanning,
 }
 
 export const pagesConfig = {
