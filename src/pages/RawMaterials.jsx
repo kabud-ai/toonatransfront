@@ -40,7 +40,7 @@ import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 import { convertUnity } from '@/components/utils/unityConverter';
 import { parseCSV } from '@/components/utils/excelExport';
-import { exportStockToPDF } from '@/components/utils/pdfExport';
+import { exportStockToPDF, exportSingleMaterialToPDF } from '@/components/utils/pdfExport';
 
 export default function RawMaterials() {
   const queryClient = useQueryClient();
@@ -282,6 +282,15 @@ export default function RawMaterials() {
       label: 'Voir stock détaillé', 
       icon: Eye, 
       onClick: (row) => { setSelectedRawMaterial(row); setDetailsOpen(true); } 
+    },
+    {
+      label: 'Télécharger rapport PDF',
+      icon: Download,
+      onClick: (row) => {
+        const lots = stockLots.filter(lot => lot.rawmaterial_id === row.id);
+        exportSingleMaterialToPDF(row, lots, `rapport_${row.code}`);
+        toast.success('Rapport PDF téléchargé');
+      }
     },
     { 
       label: 'Ajouter stock', 
