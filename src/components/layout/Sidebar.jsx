@@ -68,12 +68,12 @@ export default function Sidebar({ currentPage, collapsed, onToggle }) {
     <TooltipProvider delayDuration={0}>
       <aside 
         className={cn(
-          "fixed left-0 top-0 z-40 h-screen bg-slate-900 text-white transition-all duration-300 flex flex-col",
+          "fixed left-0 top-0 z-40 h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-white border-r border-slate-200 dark:border-slate-800 transition-all duration-300 flex flex-col",
           collapsed ? "w-16" : "w-64"
         )}
       >
         {/* Logo */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-slate-800">
+        <div className="h-16 flex items-center justify-between px-4 border-b border-slate-200 dark:border-slate-800">
           {!collapsed && (
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center">
@@ -95,7 +95,7 @@ export default function Sidebar({ currentPage, collapsed, onToggle }) {
             {modules.map((module) => (
               <div key={module.id}>
                 {!collapsed && module.label && (
-                  <p className="px-3 text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">
+                  <p className="px-3 text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-2">
                     {module.label}
                   </p>
                 )}
@@ -111,7 +111,7 @@ export default function Sidebar({ currentPage, collapsed, onToggle }) {
                           "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
                           isActive 
                             ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30" 
-                            : "text-slate-400 hover:text-white hover:bg-slate-800"
+                            : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                         )}
                       >
                         <Icon className={cn("h-5 w-5 flex-shrink-0", collapsed && "mx-auto")} />
@@ -127,7 +127,7 @@ export default function Sidebar({ currentPage, collapsed, onToggle }) {
                           <TooltipTrigger asChild>
                             {linkContent}
                           </TooltipTrigger>
-                          <TooltipContent side="right" className="bg-slate-800 text-white border-slate-700">
+                          <TooltipContent side="right" className="bg-slate-900 dark:bg-slate-800 text-white border-slate-700">
                             {item.name}
                           </TooltipContent>
                         </Tooltip>
@@ -143,10 +143,10 @@ export default function Sidebar({ currentPage, collapsed, onToggle }) {
         </ScrollArea>
 
         {/* Collapse Toggle */}
-        <div className="p-2 border-t border-slate-800">
+        <div className="p-2 border-t border-slate-200 dark:border-slate-800">
           <button
             onClick={onToggle}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
           >
             {collapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
             {!collapsed && <span className="text-sm">Collapse</span>}
