@@ -54,7 +54,7 @@ export default function ProductionPlans() {
 
   const { data: recipes = [] } = useQuery({
     queryKey: ['recipes'],
-    queryFn: () => base44.entities.Recipe.list()
+    queryFn: () => base44.entities.Recipe.list('-created_date', 100)
   });
 
   const createMutation = useMutation({
