@@ -31,10 +31,12 @@ import {
   CheckCircle,
   Clock,
   Factory,
-  DollarSign
+  DollarSign,
+  Download
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
+import { exportProductionReport } from '@/components/utils/excelExport';
 
 export default function ProductionPlans() {
   const queryClient = useQueryClient();
@@ -115,6 +117,11 @@ export default function ProductionPlans() {
     });
   };
 
+  const handleExportProduction = () => {
+    exportProductionReport(plans, 'rapport_production');
+    toast.success('Rapport exporté');
+  };
+
   // Stats
   const plannedCount = plans.filter(p => p.status === 'planned').length;
   const inProgressCount = plans.filter(p => p.status === 'in_progress').length;
@@ -175,13 +182,19 @@ export default function ProductionPlans() {
         icon={Calendar}
         breadcrumbs={['Production', 'Planification']}
         actions={
-          <Button 
-            className="bg-indigo-600 hover:bg-indigo-700"
-            onClick={() => { setSelectedPlan(null); setDialogOpen(true); }}
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Planifier Production
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={handleExportProduction}>
+              <Download className="h-4 w-4 mr-2" />
+              Rapport Production
+            </Button>
+            <Button 
+              className="bg-indigo-600 hover:bg-indigo-700"
+              onClick={() => { setSelectedPlan(null); setDialogOpen(true); }}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Planifier Production
+            </Button>
+          </div>
         }
       />
 

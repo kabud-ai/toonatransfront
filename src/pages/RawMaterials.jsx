@@ -515,6 +515,26 @@ export default function RawMaterials() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Import Dialog */}
+      <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Importer des Matières Premières</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-slate-600">
+              Téléchargez un fichier CSV avec les colonnes: Code, Nom, Unité, Stock, Densité, Description
+            </p>
+            <Input
+              type="file"
+              accept=".csv"
+              onChange={handleImport}
+              className="cursor-pointer"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -22,8 +22,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Package, Plus, Eye, Pencil, Trash2, Barcode, Upload, X } from 'lucide-react';
+import { Package, Plus, Eye, Pencil, Trash2, Barcode, Upload, X, Download, FileUp } from 'lucide-react';
 import { toast } from 'sonner';
+import { exportToCSV, parseCSV } from '@/components/utils/excelExport';
 
 export default function Products() {
   const queryClient = useQueryClient();
@@ -31,6 +32,7 @@ export default function Products() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ['products'],
@@ -74,6 +76,50 @@ export default function Products() {
     } finally {
       setUploadingImage(false);
     }
+  };
+
+  const handleExport = () => {
+    const exportData = products.map(p => ({
+      'Code': p.code,
+      'Nom': p.name,
+      'Unité': p.unity,
+      'Description': p.description || '',
+      'Créé le': p.created_date
+    }));
+    exportToCSV(exportData, 'produits_export');
+    toast.success('Export réussi');
+  };
+
+  const handleImport = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const text = event.target.result;
+        const data = parseCSV(text);
+        
+        for (const row of data) {
+          if (row.Code && row.Nom) {
+            await base44.entities.Product.create({
+              code: row.Code,
+              name: row.Nom,
+              unity: row['Unité'] || 'kg',
+              description: row.Description || '',
+              slug: row.Nom.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+            });
+          }
+        }
+        
+        queryClient.invalidateQueries({ queryKey: ['products'] });
+        setImportDialogOpen(false);
+        toast.success(`${data.length} produits importés`);
+      } catch (error) {
+        toast.error('Erreur lors de l\'import');
+      }
+    };
+    reader.readAsText(file);
   };
 
   const handleSubmit = (e) => {
@@ -149,13 +195,23 @@ export default function Products() {
         icon={Package}
         breadcrumbs={['Inventaire', 'Produits']}
         actions={
-          <Button 
-            className="bg-indigo-600 hover:bg-indigo-700"
-            onClick={() => { setSelectedProduct(null); setDialogOpen(true); }}
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Nouveau Produit
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={handleExport}>
+              <Download className="h-4 w-4 mr-2" />
+              Export Excel
+            </Button>
+            <Button variant="outline" onClick={() => setImportDialogOpen(true)}>
+              <FileUp className="h-4 w-4 mr-2" />
+              Import Excel
+            </Button>
+            <Button 
+              className="bg-indigo-600 hover:bg-indigo-700"
+              onClick={() => { setSelectedProduct(null); setDialogOpen(true); }}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Nouveau Produit
+            </Button>
+          </div>
         }
       />
 
@@ -268,6 +324,26 @@ export default function Products() {
               </Button>
             </div>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Import Dialog */}
+      <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Importer des Produits</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-slate-600">
+              Téléchargez un fichier CSV avec les colonnes: Code, Nom, Unité, Description
+            </p>
+            <Input
+              type="file"
+              accept=".csv"
+              onChange={handleImport}
+              className="cursor-pointer"
+            />
+          </div>
         </DialogContent>
       </Dialog>
     </div>
