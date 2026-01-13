@@ -36,7 +36,7 @@ import {
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
-import { convertUnity, formatQuantity, areUnitsCompatible } from '@/utils/unityConverter';
+import { convertUnity } from '@/components/utils/unityConverter';
 
 export default function RawMaterials() {
   const queryClient = useQueryClient();
