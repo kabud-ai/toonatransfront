@@ -39,7 +39,8 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 import { convertUnity } from '@/components/utils/unityConverter';
-import { exportStockReport, parseCSV } from '@/components/utils/excelExport';
+import { parseCSV } from '@/components/utils/excelExport';
+import { exportStockToPDF } from '@/components/utils/pdfExport';
 
 export default function RawMaterials() {
   const queryClient = useQueryClient();
@@ -144,8 +145,8 @@ export default function RawMaterials() {
   };
 
   const handleExportStock = () => {
-    exportStockReport(rawMaterials, 'rapport_stock');
-    toast.success('Rapport exporté');
+    exportStockToPDF(rawMaterials, 'rapport_stock');
+    toast.success('Rapport PDF exporté');
   };
 
   const handleImport = async (e) => {
@@ -302,7 +303,7 @@ export default function RawMaterials() {
           <div className="flex gap-2">
             <Button variant="outline" onClick={handleExportStock}>
               <Download className="h-4 w-4 mr-2" />
-              Rapport Stock
+              Rapport Stock PDF
             </Button>
             <Button variant="outline" onClick={() => setImportDialogOpen(true)}>
               <FileUp className="h-4 w-4 mr-2" />

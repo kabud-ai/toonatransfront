@@ -36,7 +36,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
-import { exportProductionReport } from '@/components/utils/excelExport';
+import { exportProductionToPDF } from '@/components/utils/pdfExport';
 
 export default function ProductionPlans() {
   const queryClient = useQueryClient();
@@ -118,8 +118,8 @@ export default function ProductionPlans() {
   };
 
   const handleExportProduction = () => {
-    exportProductionReport(plans, 'rapport_production');
-    toast.success('Rapport exporté');
+    exportProductionToPDF(plans, 'rapport_production');
+    toast.success('Rapport PDF exporté');
   };
 
   // Stats
@@ -185,7 +185,7 @@ export default function ProductionPlans() {
           <div className="flex gap-2">
             <Button variant="outline" onClick={handleExportProduction}>
               <Download className="h-4 w-4 mr-2" />
-              Rapport Production
+              Rapport Production PDF
             </Button>
             <Button 
               className="bg-indigo-600 hover:bg-indigo-700"
