@@ -6,10 +6,6 @@ import {
   LayoutDashboard,
   Package,
   Boxes,
-  Factory,
-  ClipboardCheck,
-  ShoppingCart,
-  Wrench,
   Settings,
   ChevronLeft,
   ChevronRight,
@@ -18,7 +14,7 @@ import {
   FileText,
   BarChart3,
   Layers,
-  Truck
+  ClipboardCheck
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -34,50 +30,34 @@ const modules = [
     id: 'production',
     label: 'Production',
     items: [
-      { name: 'Bill of Materials', icon: Layers, page: 'BillOfMaterials' },
-      { name: 'Manufacturing', icon: Factory, page: 'ManufacturingOrders' },
-      { name: 'Planning', icon: BarChart3, page: 'ProductionPlanning' },
+      { name: 'Recettes', icon: Layers, page: 'Recipes' },
+      { name: 'Planification', icon: BarChart3, page: 'ProductionPlans' },
+      { name: 'Produits Finis', icon: Package, page: 'Products' },
     ]
   },
   {
     id: 'inventory',
-    label: 'Inventory',
+    label: 'Inventaire',
     items: [
-      { name: 'Products', icon: Package, page: 'Products' },
-      { name: 'Stock', icon: Boxes, page: 'Inventory' },
-      { name: 'Warehouses', icon: Building2, page: 'Warehouses' },
+      { name: 'Matières Premières', icon: Boxes, page: 'RawMaterials' },
+      { name: 'Entrepôts', icon: Building2, page: 'Warehouses' },
     ]
   },
   {
-    id: 'quality',
-    label: 'Quality',
+    id: 'config',
+    label: 'Configuration',
     items: [
-      { name: 'Inspections', icon: ClipboardCheck, page: 'QualityInspections' },
-    ]
-  },
-  {
-    id: 'procurement',
-    label: 'Procurement',
-    items: [
-      { name: 'Suppliers', icon: Truck, page: 'Suppliers' },
-      { name: 'Purchase Orders', icon: ShoppingCart, page: 'PurchaseOrders' },
-    ]
-  },
-  {
-    id: 'maintenance',
-    label: 'Maintenance',
-    items: [
-      { name: 'Equipment', icon: Wrench, page: 'Equipment' },
-      { name: 'Work Orders', icon: FileText, page: 'MaintenanceOrders' },
+      { name: 'Unités de Mesure', icon: Settings, page: 'Unities' },
+      { name: 'Types de Recettes', icon: FileText, page: 'RecipeTypes' },
+      { name: 'Historique Recettes', icon: ClipboardCheck, page: 'RecipeHistory' },
     ]
   },
   {
     id: 'admin',
     label: 'Administration',
     items: [
-      { name: 'Sites', icon: Building2, page: 'Sites' },
-      { name: 'Users', icon: Users, page: 'UserManagement' },
-      { name: 'Settings', icon: Settings, page: 'Settings' },
+      { name: 'Utilisateurs', icon: Users, page: 'UserManagement' },
+      { name: 'Paramètres', icon: Settings, page: 'Settings' },
     ]
   }
 ];
