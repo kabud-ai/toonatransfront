@@ -14,7 +14,8 @@ import {
   FileText,
   BarChart3,
   Layers,
-  ClipboardCheck
+  ClipboardCheck,
+  Factory
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
