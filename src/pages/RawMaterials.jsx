@@ -31,12 +31,15 @@ import {
   TrendingUp,
   Package,
   DollarSign,
-  History
+  History,
+  Download,
+  FileUp
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 import { convertUnity } from '@/components/utils/unityConverter';
+import { exportStockReport, parseCSV } from '@/components/utils/excelExport';
 
 export default function RawMaterials() {
   const queryClient = useQueryClient();
@@ -44,6 +47,7 @@ export default function RawMaterials() {
   const [selectedRawMaterial, setSelectedRawMaterial] = useState(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [addStockOpen, setAddStockOpen] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
 
   const { data: rawMaterials = [], isLoading } = useQuery({
     queryKey: ['rawMaterials'],
@@ -137,6 +141,45 @@ export default function RawMaterials() {
 
   const generateSlug = (name) => {
     return name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  };
+
+  const handleExportStock = () => {
+    exportStockReport(rawMaterials, 'rapport_stock');
+    toast.success('Rapport exporté');
+  };
+
+  const handleImport = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const text = event.target.result;
+        const data = parseCSV(text);
+        
+        for (const row of data) {
+          if (row.Code && row.Nom) {
+            await base44.entities.RawMaterial.create({
+              code: row.Code,
+              name: row.Nom,
+              unity: row['Unité'] || 'kg',
+              instock: parseFloat(row.Stock) || 0,
+              density: parseFloat(row['Densité']) || null,
+              description: row.Description || '',
+              slug: row.Nom.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+            });
+          }
+        }
+        
+        queryClient.invalidateQueries({ queryKey: ['rawMaterials'] });
+        setImportDialogOpen(false);
+        toast.success(`${data.length} matières importées`);
+      } catch (error) {
+        toast.error('Erreur lors de l\'import');
+      }
+    };
+    reader.readAsText(file);
   };
 
   const handleSubmit = (e) => {
@@ -256,13 +299,23 @@ export default function RawMaterials() {
         icon={Boxes}
         breadcrumbs={['Inventaire', 'Matières Premières']}
         actions={
-          <Button 
-            className="bg-indigo-600 hover:bg-indigo-700"
-            onClick={() => { setSelectedRawMaterial(null); setDialogOpen(true); }}
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Nouvelle Matière
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={handleExportStock}>
+              <Download className="h-4 w-4 mr-2" />
+              Rapport Stock
+            </Button>
+            <Button variant="outline" onClick={() => setImportDialogOpen(true)}>
+              <FileUp className="h-4 w-4 mr-2" />
+              Import Excel
+            </Button>
+            <Button 
+              className="bg-indigo-600 hover:bg-indigo-700"
+              onClick={() => { setSelectedRawMaterial(null); setDialogOpen(true); }}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Nouvelle Matière
+            </Button>
+          </div>
         }
       />
 
