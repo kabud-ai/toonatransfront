@@ -22,12 +22,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Package, Plus, Eye, Pencil, Trash2, Barcode } from 'lucide-react';
+import { Package, Plus, Eye, Pencil, Trash2, Barcode, Upload, X } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function Products() {
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ['products'],
@@ -57,6 +60,22 @@ export default function Products() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['products'] })
   });
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      setImageUrl(file_url);
+      toast.success('Image uploadée');
+    } catch (error) {
+      toast.error('Erreur upload image');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -65,7 +84,8 @@ export default function Products() {
       code: formData.get('code'),
       unity: formData.get('unity'),
       description: formData.get('description'),
-      slug: formData.get('name').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+      slug: formData.get('name').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+      image_url: imageUrl || selectedProduct?.image_url
     };
 
     if (selectedProduct) {
@@ -149,12 +169,51 @@ export default function Products() {
         emptyIcon={Package}
       />
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <Dialog open={dialogOpen} onOpenChange={(open) => {
+        setDialogOpen(open);
+        if (!open) {
+          setImageUrl(null);
+          setSelectedProduct(null);
+        } else if (selectedProduct) {
+          setImageUrl(selectedProduct.image_url);
+        }
+      }}>
         <DialogContent className="max-w-xl">
           <DialogHeader>
             <DialogTitle>{selectedProduct ? 'Modifier' : 'Nouveau'} Produit</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label>Image du Produit</Label>
+              <div className="flex items-center gap-4">
+                {imageUrl ? (
+                  <div className="relative">
+                    <img src={imageUrl} alt="Produit" className="h-20 w-20 rounded-lg object-cover border-2 border-slate-200" />
+                    <button
+                      type="button"
+                      onClick={() => setImageUrl(null)}
+                      className="absolute -top-2 -right-2 h-6 w-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="h-20 w-20 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                    <Package className="h-8 w-8 text-slate-400" />
+                  </div>
+                )}
+                <div className="flex-1">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploadingImage}
+                    className="cursor-pointer"
+                  />
+                  {uploadingImage && <p className="text-xs text-slate-500 mt-1">Upload en cours...</p>}
+                </div>
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Nom du Produit *</Label>
