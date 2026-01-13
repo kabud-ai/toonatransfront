@@ -62,17 +62,10 @@ export default function Products() {
     const formData = new FormData(e.target);
     const data = {
       name: formData.get('name'),
-      sku: formData.get('sku'),
-      type: formData.get('type'),
-      category: formData.get('category'),
-      unit_of_measure: formData.get('unit_of_measure'),
-      cost_price: parseFloat(formData.get('cost_price')) || 0,
-      sale_price: parseFloat(formData.get('sale_price')) || 0,
-      min_stock: parseFloat(formData.get('min_stock')) || 0,
-      lead_time_days: parseInt(formData.get('lead_time_days')) || 0,
-      barcode: formData.get('barcode'),
+      code: formData.get('code'),
+      unity: formData.get('unity'),
       description: formData.get('description'),
-      is_active: true
+      slug: formData.get('name').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
     };
 
     if (selectedProduct) {
@@ -84,8 +77,8 @@ export default function Products() {
 
   const columns = [
     {
-      key: 'sku',
-      label: 'SKU',
+      key: 'code',
+      label: 'Code',
       sortable: true,
       render: (value) => (
         <span className="font-mono text-sm bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
@@ -95,55 +88,29 @@ export default function Products() {
     },
     {
       key: 'name',
-      label: 'Product Name',
+      label: 'Nom du Produit',
       sortable: true,
       render: (value, row) => (
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+          <div className="h-10 w-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
             {row.image_url ? (
               <img src={row.image_url} alt={value} className="h-10 w-10 rounded-lg object-cover" />
             ) : (
-              <Package className="h-5 w-5 text-slate-400" />
+              <Package className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
             )}
           </div>
           <div>
             <p className="font-medium">{value}</p>
-            <p className="text-xs text-slate-500">{row.category}</p>
+            {row.description && <p className="text-xs text-slate-500">{row.description.slice(0, 40)}</p>}
           </div>
         </div>
       )
     },
     {
-      key: 'type',
-      label: 'Type',
+      key: 'unity',
+      label: 'Unité',
       render: (value) => (
-        <Badge variant="outline" className="capitalize">
-          {value?.replace(/_/g, ' ')}
-        </Badge>
-      )
-    },
-    {
-      key: 'unit_of_measure',
-      label: 'Unit',
-      render: (value) => value || '-'
-    },
-    {
-      key: 'cost_price',
-      label: 'Cost',
-      sortable: true,
-      render: (value) => `$${(value || 0).toFixed(2)}`
-    },
-    {
-      key: 'sale_price',
-      label: 'Sale Price',
-      sortable: true,
-      render: (value) => `$${(value || 0).toFixed(2)}`
-    },
-    {
-      key: 'is_active',
-      label: 'Status',
-      render: (value) => (
-        <StatusBadge status={value ? 'active' : 'offline'} customLabel={value ? 'Active' : 'Inactive'} />
+        <Badge variant="outline">{value || '-'}</Badge>
       )
     }
   ];
@@ -157,17 +124,17 @@ export default function Products() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Products"
-        description="Manage your product catalog and inventory items"
+        title="Produits"
+        description="Gérer le catalogue des produits finis"
         icon={Package}
-        breadcrumbs={['Inventory', 'Products']}
+        breadcrumbs={['Inventaire', 'Produits']}
         actions={
           <Button 
             className="bg-indigo-600 hover:bg-indigo-700"
             onClick={() => { setSelectedProduct(null); setDialogOpen(true); }}
           >
             <Plus className="h-4 w-4 mr-2" />
-            Add Product
+            Nouveau Produit
           </Button>
         }
       />
@@ -178,142 +145,67 @@ export default function Products() {
         loading={isLoading}
         selectable
         actions={actions}
-        emptyMessage="No products found"
+        emptyMessage="Aucun produit trouvé"
         emptyIcon={Package}
       />
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-xl">
           <DialogHeader>
-            <DialogTitle>{selectedProduct ? 'Edit Product' : 'New Product'}</DialogTitle>
+            <DialogTitle>{selectedProduct ? 'Modifier' : 'Nouveau'} Produit</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Product Name *</Label>
+                <Label>Nom du Produit *</Label>
                 <Input 
-                  id="name" 
                   name="name" 
                   defaultValue={selectedProduct?.name}
                   required 
+                  placeholder="ex: Chocolat noir"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="sku">SKU *</Label>
+                <Label>Code *</Label>
                 <Input 
-                  id="sku" 
-                  name="sku" 
-                  defaultValue={selectedProduct?.sku}
+                  name="code" 
+                  defaultValue={selectedProduct?.code}
                   required 
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="type">Type</Label>
-                <Select name="type" defaultValue={selectedProduct?.type || 'raw_material'}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="raw_material">Raw Material</SelectItem>
-                    <SelectItem value="semi_finished">Semi-Finished</SelectItem>
-                    <SelectItem value="finished_product">Finished Product</SelectItem>
-                    <SelectItem value="consumable">Consumable</SelectItem>
-                    <SelectItem value="spare_part">Spare Part</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="category">Category</Label>
-                <Input 
-                  id="category" 
-                  name="category" 
-                  defaultValue={selectedProduct?.category}
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="unit_of_measure">Unit of Measure</Label>
-                <Select name="unit_of_measure" defaultValue={selectedProduct?.unit_of_measure || 'unit'}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="unit">Unit</SelectItem>
-                    <SelectItem value="kg">Kilogram</SelectItem>
-                    <SelectItem value="liter">Liter</SelectItem>
-                    <SelectItem value="meter">Meter</SelectItem>
-                    <SelectItem value="piece">Piece</SelectItem>
-                    <SelectItem value="box">Box</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="cost_price">Cost Price</Label>
-                <Input 
-                  id="cost_price" 
-                  name="cost_price" 
-                  type="number" 
-                  step="0.01"
-                  defaultValue={selectedProduct?.cost_price}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="sale_price">Sale Price</Label>
-                <Input 
-                  id="sale_price" 
-                  name="sale_price" 
-                  type="number" 
-                  step="0.01"
-                  defaultValue={selectedProduct?.sale_price}
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="min_stock">Min Stock</Label>
-                <Input 
-                  id="min_stock" 
-                  name="min_stock" 
-                  type="number"
-                  defaultValue={selectedProduct?.min_stock}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lead_time_days">Lead Time (days)</Label>
-                <Input 
-                  id="lead_time_days" 
-                  name="lead_time_days" 
-                  type="number"
-                  defaultValue={selectedProduct?.lead_time_days}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="barcode">Barcode</Label>
-                <Input 
-                  id="barcode" 
-                  name="barcode"
-                  defaultValue={selectedProduct?.barcode}
+                  placeholder="ex: PROD-001"
                 />
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label>Unité de mesure *</Label>
+              <Select name="unity" defaultValue={selectedProduct?.unity || 'kg'} required>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="kg">Kilogramme (kg)</SelectItem>
+                  <SelectItem value="g">Gramme (g)</SelectItem>
+                  <SelectItem value="t">Tonne (t)</SelectItem>
+                  <SelectItem value="L">Litre (L)</SelectItem>
+                  <SelectItem value="ml">Millilitre (ml)</SelectItem>
+                  <SelectItem value="pcs">Pièce (pcs)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Description</Label>
               <Textarea 
-                id="description" 
                 name="description"
                 defaultValue={selectedProduct?.description}
                 rows={3}
+                placeholder="Description du produit"
               />
             </div>
             <div className="flex justify-end gap-3 pt-4">
               <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
-                Cancel
+                Annuler
               </Button>
               <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700">
-                {selectedProduct ? 'Update' : 'Create'}
+                {selectedProduct ? 'Mettre à jour' : 'Créer'}
               </Button>
             </div>
           </form>
