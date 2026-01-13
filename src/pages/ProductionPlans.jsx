@@ -233,9 +233,9 @@ export default function ProductionPlans() {
                   <SelectValue placeholder="Sélectionner une recette" />
                 </SelectTrigger>
                 <SelectContent>
-                  {recipes.filter(r => r.status === 'active').map((r) => (
+                  {recipes.map((r) => (
                     <SelectItem key={r.id} value={r.id}>
-                      {r.title} (v{r.version})
+                      {r.title} (v{r.version}) {r.status && `- ${r.status}`}
                     </SelectItem>
                   ))}
                 </SelectContent>
