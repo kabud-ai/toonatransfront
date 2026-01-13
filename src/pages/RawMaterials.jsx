@@ -50,10 +50,16 @@ export default function RawMaterials() {
     queryFn: () => base44.entities.RawMaterial.list('-created_date', 100)
   });
 
-  const { data: unities = [] } = useQuery({
-    queryKey: ['unities'],
-    queryFn: () => base44.entities.Unity.list()
-  });
+  const unityOptions = [
+    { value: 'kg', label: 'Kilogramme (kg)' },
+    { value: 'g', label: 'Gramme (g)' },
+    { value: 't', label: 'Tonne (t)' },
+    { value: 'L', label: 'Litre (L)' },
+    { value: 'ml', label: 'Millilitre (ml)' },
+    { value: 'm', label: 'Mètre (m)' },
+    { value: 'cm', label: 'Centimètre (cm)' },
+    { value: 'pcs', label: 'Pièce (pcs)' }
+  ];
 
   const { data: stockLots = [] } = useQuery({
     queryKey: ['stockLots'],
@@ -98,7 +104,7 @@ export default function RawMaterials() {
       
       // Update total instock with conversion
       const currentStock = selectedRawMaterial.instock || 0;
-      const defaultUnity = selectedRawMaterial.unity_symbol;
+      const defaultUnity = selectedRawMaterial.unity;
       
       // Convert to default unity if different
       let quantityToAdd = quantity;
@@ -136,15 +142,13 @@ export default function RawMaterials() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const unity = unities.find(u => u.id === formData.get('unity_id'));
     
     const data = {
       name: formData.get('name'),
       code: selectedRawMaterial?.code || generateCode(),
       slug: generateSlug(formData.get('name')),
       density: parseFloat(formData.get('density')) || 0,
-      unity_id: formData.get('unity_id'),
-      unity_symbol: unity?.symbol,
+      unity: formData.get('unity'),
       description: formData.get('description'),
       instock: selectedRawMaterial?.instock || 0
     };
@@ -210,7 +214,7 @@ export default function RawMaterials() {
             <span className={isLow ? 'text-red-600 font-medium' : 'font-medium'}>
               {(value || 0).toFixed(2)}
             </span>
-            <span className="text-xs text-slate-500">{row.unity_symbol}</span>
+            <span className="text-xs text-slate-500">{row.unity}</span>
           </div>
         );
       }
@@ -221,7 +225,7 @@ export default function RawMaterials() {
       render: (value) => value ? value.toFixed(2) : '-'
     },
     {
-      key: 'unity_symbol',
+      key: 'unity',
       label: 'Unité',
       render: (value) => (
         <Badge variant="outline">{value || '-'}</Badge>
@@ -292,14 +296,14 @@ export default function RawMaterials() {
               </div>
               <div className="space-y-2">
                 <Label>Unité par défaut *</Label>
-                <Select name="unity_id" defaultValue={selectedRawMaterial?.unity_id} required>
+                <Select name="unity" defaultValue={selectedRawMaterial?.unity} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Sélectionner" />
                   </SelectTrigger>
                   <SelectContent>
-                    {unities.map((u) => (
-                      <SelectItem key={u.id} value={u.id}>
-                        {u.name} ({u.symbol})
+                    {unityOptions.map((u) => (
+                      <SelectItem key={u.value} value={u.value}>
+                        {u.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -357,11 +361,18 @@ export default function RawMaterials() {
               </div>
               <div className="space-y-2">
                 <Label>Unité *</Label>
-                <Input 
-                  name="unity" 
-                  defaultValue={selectedRawMaterial?.unity_symbol}
-                  required
-                />
+                <Select name="unity" defaultValue={selectedRawMaterial?.unity} required>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {unityOptions.map((u) => (
+                      <SelectItem key={u.value} value={u.value}>
+                        {u.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             <div className="space-y-2">
@@ -407,7 +418,7 @@ export default function RawMaterials() {
                       <div>
                         <p className="text-xs text-slate-500">Stock Total</p>
                         <p className="text-lg font-medium">
-                          {(selectedRawMaterial.instock || 0).toFixed(2)} {selectedRawMaterial.unity_symbol}
+                          {(selectedRawMaterial.instock || 0).toFixed(2)} {selectedRawMaterial.unity}
                         </p>
                       </div>
                     </div>

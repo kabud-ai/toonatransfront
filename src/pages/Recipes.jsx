@@ -199,7 +199,7 @@ export default function Recipes() {
       const rm = rawMaterials.find(r => r.id === value);
       if (rm) {
         updated[stepIndex].components[compIndex].rawmaterial_name = rm.name;
-        updated[stepIndex].components[compIndex].unity = rm.unity_symbol || 'kg';
+        updated[stepIndex].components[compIndex].unity = rm.unity || 'kg';
       }
     }
     
