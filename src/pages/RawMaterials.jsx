@@ -36,6 +36,7 @@ import {
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
+import { convertUnity, formatQuantity, areUnitsCompatible } from '@/utils/unityConverter';
 
 export default function RawMaterials() {
   const queryClient = useQueryClient();
@@ -95,10 +96,24 @@ export default function RawMaterials() {
         bought_at: new Date().toISOString()
       });
       
-      // Update total instock
+      // Update total instock with conversion
       const currentStock = selectedRawMaterial.instock || 0;
+      const defaultUnity = selectedRawMaterial.unity_symbol;
+      
+      // Convert to default unity if different
+      let quantityToAdd = quantity;
+      if (unity !== defaultUnity) {
+        const converted = convertUnity(quantity, unity, defaultUnity);
+        if (converted !== null) {
+          quantityToAdd = converted;
+          toast.info(`Converti: ${quantity} ${unity} = ${converted.toFixed(2)} ${defaultUnity}`);
+        } else {
+          toast.warning('Unités incompatibles - ajout sans conversion');
+        }
+      }
+      
       await base44.entities.RawMaterial.update(rawMaterialId, {
-        instock: currentStock + quantity
+        instock: currentStock + quantityToAdd
       });
     },
     onSuccess: () => {

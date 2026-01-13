@@ -5,20 +5,20 @@ import Inventory from './pages/Inventory';
 import MaintenanceOrders from './pages/MaintenanceOrders';
 import ManufacturingOrders from './pages/ManufacturingOrders';
 import ProductionPlanning from './pages/ProductionPlanning';
+import ProductionPlans from './pages/ProductionPlans';
 import Products from './pages/Products';
 import PurchaseOrders from './pages/PurchaseOrders';
 import QualityInspections from './pages/QualityInspections';
+import RawMaterials from './pages/RawMaterials';
+import RecipeHistory from './pages/RecipeHistory';
+import RecipeTypes from './pages/RecipeTypes';
+import Recipes from './pages/Recipes';
 import Settings from './pages/Settings';
 import Sites from './pages/Sites';
 import Suppliers from './pages/Suppliers';
+import Unities from './pages/Unities';
 import UserManagement from './pages/UserManagement';
 import Warehouses from './pages/Warehouses';
-import Recipes from './pages/Recipes';
-import RawMaterials from './pages/RawMaterials';
-import Unities from './pages/Unities';
-import RecipeTypes from './pages/RecipeTypes';
-import RecipeHistory from './pages/RecipeHistory';
-import ProductionPlans from './pages/ProductionPlans';
 import __Layout from './Layout.jsx';
 
 
@@ -30,20 +30,20 @@ export const PAGES = {
     "MaintenanceOrders": MaintenanceOrders,
     "ManufacturingOrders": ManufacturingOrders,
     "ProductionPlanning": ProductionPlanning,
+    "ProductionPlans": ProductionPlans,
     "Products": Products,
     "PurchaseOrders": PurchaseOrders,
     "QualityInspections": QualityInspections,
+    "RawMaterials": RawMaterials,
+    "RecipeHistory": RecipeHistory,
+    "RecipeTypes": RecipeTypes,
+    "Recipes": Recipes,
     "Settings": Settings,
     "Sites": Sites,
     "Suppliers": Suppliers,
+    "Unities": Unities,
     "UserManagement": UserManagement,
     "Warehouses": Warehouses,
-    "Recipes": Recipes,
-    "RawMaterials": RawMaterials,
-    "Unities": Unities,
-    "RecipeTypes": RecipeTypes,
-    "RecipeHistory": RecipeHistory,
-    "ProductionPlans": ProductionPlans,
 }
 
 export const pagesConfig = {
