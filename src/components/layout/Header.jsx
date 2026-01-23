@@ -24,6 +24,7 @@ import {
   Menu
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import NotificationCenter from '@/components/notifications/NotificationCenter';
 
 export default function Header({ user, collapsed, onMenuToggle, darkMode, onDarkModeToggle }) {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -83,34 +84,7 @@ export default function Header({ user, collapsed, onMenuToggle, darkMode, onDark
         </Button>
 
         {/* Notifications */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative text-slate-600 dark:text-slate-400">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-red-500 rounded-full" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-80">
-            <DropdownMenuLabel className="flex items-center justify-between">
-              <span>Notifications</span>
-              <Badge variant="secondary" className="text-xs">3 new</Badge>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {notifications.map((notif) => (
-              <DropdownMenuItem key={notif.id} className="flex flex-col items-start p-3 cursor-pointer">
-                <div className="flex items-center justify-between w-full">
-                  <span className="font-medium text-sm">{notif.title}</span>
-                  <span className="text-xs text-slate-400">{notif.time}</span>
-                </div>
-                <span className="text-xs text-slate-500 mt-1">{notif.message}</span>
-              </DropdownMenuItem>
-            ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="justify-center text-indigo-600 font-medium">
-              View all notifications
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <NotificationCenter />
 
         {/* Site selector */}
         <DropdownMenu>
