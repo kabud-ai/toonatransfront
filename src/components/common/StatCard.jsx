@@ -15,6 +15,7 @@ export default function StatCard({
   className 
 }) {
   const colorClasses = {
+    sky: 'bg-sky-50 text-sky-600 dark:bg-sky-900/20 dark:text-sky-400',
     indigo: 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400',
     green: 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400',
     amber: 'bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400',
