@@ -132,7 +132,7 @@ export default function DataTable({
             </div>
           )}
           {selected.length > 0 && (
-            <Badge variant="secondary" className="bg-indigo-100 text-indigo-700">
+            <Badge variant="secondary" className="bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400">
               {selected.length} selected
             </Badge>
           )}
@@ -204,7 +204,7 @@ export default function DataTable({
                   className={cn(
                     "transition-colors",
                     onRowClick && "cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50",
-                    selected.includes(row.id) && "bg-indigo-50 dark:bg-indigo-900/10"
+                    selected.includes(row.id) && "bg-sky-50 dark:bg-sky-900/10"
                   )}
                   onClick={() => onRowClick?.(row)}
                 >

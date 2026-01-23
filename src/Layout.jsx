@@ -77,12 +77,14 @@ export default function Layout({ children, currentPageName }) {
 
       <style>{`
         :root {
-          --primary: 79 70 229;
+          --primary: 14 165 233;
           --primary-foreground: 255 255 255;
+          --sky: 56 189 248;
         }
         .dark {
           --background: 2 6 23;
           --foreground: 248 250 252;
+          --primary: 56 189 248;
         }
       `}</style>
     </div>
