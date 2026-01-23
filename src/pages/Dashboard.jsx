@@ -111,7 +111,7 @@ export default function Dashboard() {
         description="Overview of your production operations"
         icon={LayoutDashboard}
         actions={
-          <Button className="bg-indigo-600 hover:bg-indigo-700">
+          <Button className="bg-sky-500 hover:bg-sky-600">
             <Calendar className="h-4 w-4 mr-2" />
             {format(new Date(), 'MMM d, yyyy')}
           </Button>
@@ -128,7 +128,7 @@ export default function Dashboard() {
           trend="up"
           trendValue="+12%"
           trendLabel="vs last week"
-          color="indigo"
+          color="sky"
         />
         <StatCard
           title="Stock Value"
@@ -166,7 +166,7 @@ export default function Dashboard() {
               <CardTitle className="text-lg font-medium">Production Overview</CardTitle>
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-indigo-500" />
+                  <div className="h-3 w-3 rounded-full bg-sky-500" />
                   <span className="text-slate-500">Planned</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -182,8 +182,8 @@ export default function Dashboard() {
                 <AreaChart data={productionData}>
                   <defs>
                     <linearGradient id="colorPlanned" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.1}/>
-                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.1}/>
+                      <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
                     </linearGradient>
                     <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
@@ -201,7 +201,7 @@ export default function Dashboard() {
                       boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
                     }} 
                   />
-                  <Area type="monotone" dataKey="planned" stroke="#6366f1" strokeWidth={2} fill="url(#colorPlanned)" />
+                  <Area type="monotone" dataKey="planned" stroke="#0ea5e9" strokeWidth={2} fill="url(#colorPlanned)" />
                   <Area type="monotone" dataKey="actual" stroke="#10b981" strokeWidth={2} fill="url(#colorActual)" />
                 </AreaChart>
               </ResponsiveContainer>
@@ -256,7 +256,7 @@ export default function Dashboard() {
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg font-medium">Recent Manufacturing Orders</CardTitle>
               <Link to={createPageUrl('ManufacturingOrders')}>
-                <Button variant="ghost" size="sm" className="text-indigo-600">
+                <Button variant="ghost" size="sm" className="text-sky-600 hover:text-sky-700">
                   View all <ArrowRight className="h-4 w-4 ml-1" />
                 </Button>
               </Link>
@@ -269,8 +269,8 @@ export default function Dashboard() {
                 className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
-                    <Factory className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                  <div className="h-10 w-10 rounded-lg bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center">
+                    <Factory className="h-5 w-5 text-sky-600 dark:text-sky-400" />
                   </div>
                   <div>
                     <p className="font-medium text-slate-900 dark:text-slate-100">{order.order_number}</p>
