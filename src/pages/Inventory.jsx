@@ -32,12 +32,16 @@ import {
   Package,
   ArrowDownRight,
   ArrowUpRight,
-  History
+  History,
+  ScanLine
 } from 'lucide-react';
+import BarcodeScanner from '@/components/barcode/BarcodeScanner';
+import EmptyBox from '@/components/illustrations/EmptyBox';
 
 export default function Inventory() {
   const queryClient = useQueryClient();
   const [movementDialogOpen, setMovementDialogOpen] = useState(false);
+  const [scannerOpen, setScannerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('levels');
 
   const { data: stockLevels = [], isLoading: loadingLevels } = useQuery({
@@ -235,13 +239,22 @@ export default function Inventory() {
         icon={Boxes}
         breadcrumbs={['Inventory', 'Stock']}
         actions={
-          <Button 
-            className="bg-indigo-600 hover:bg-indigo-700"
-            onClick={() => setMovementDialogOpen(true)}
-          >
-            <ArrowUpDown className="h-4 w-4 mr-2" />
-            Record Movement
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="outline"
+              onClick={() => setScannerOpen(true)}
+            >
+              <ScanLine className="h-4 w-4 mr-2" />
+              Scan
+            </Button>
+            <Button 
+              className="bg-sky-600 hover:bg-sky-700"
+              onClick={() => setMovementDialogOpen(true)}
+            >
+              <ArrowUpDown className="h-4 w-4 mr-2" />
+              Record Movement
+            </Button>
+          </div>
         }
       />
 
@@ -384,6 +397,17 @@ export default function Inventory() {
           </form>
         </DialogContent>
       </Dialog>
+
+      {/* Barcode Scanner */}
+      <BarcodeScanner
+        open={scannerOpen}
+        onClose={() => setScannerOpen(false)}
+        onScan={(code) => {
+          console.log('Scanned:', code);
+          // TODO: Search for product/lot by code
+        }}
+        title="Scan Product or Lot"
+      />
     </div>
   );
 }
