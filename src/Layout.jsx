@@ -3,6 +3,7 @@ import { base44 } from '@/api/base44Client';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
 import { cn } from '@/lib/utils';
+import { LanguageProvider } from '@/components/i18n/LanguageContext';
 
 export default function Layout({ children, currentPageName }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -39,8 +40,9 @@ export default function Layout({ children, currentPageName }) {
   }, [darkMode]);
 
   return (
-    <div className={cn("min-h-screen bg-slate-50 dark:bg-slate-950", darkMode && "dark")}>
-      {/* Sidebar - hidden on mobile by default */}
+    <LanguageProvider>
+      <div className={cn("min-h-screen bg-slate-50 dark:bg-slate-950", darkMode && "dark")}>
+        {/* Sidebar - hidden on mobile by default */}
       <div className={cn(
         "hidden lg:block",
         mobileOpen && "block fixed inset-0 z-50 lg:relative"

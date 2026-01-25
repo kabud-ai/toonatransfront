@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import NotificationCenter from '@/components/notifications/NotificationCenter';
+import LanguageSelector from '@/components/i18n/LanguageSelector';
 
 export default function Header({ user, collapsed, onMenuToggle, darkMode, onDarkModeToggle }) {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -68,6 +69,9 @@ export default function Header({ user, collapsed, onMenuToggle, darkMode, onDark
 
       {/* Right side */}
       <div className="flex items-center gap-2">
+        {/* Language selector */}
+        <LanguageSelector />
+
         {/* Dark mode toggle */}
         <Button
           variant="ghost"

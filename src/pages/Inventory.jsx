@@ -37,8 +37,10 @@ import {
 } from 'lucide-react';
 import BarcodeScanner from '@/components/barcode/BarcodeScanner';
 import EmptyBox from '@/components/illustrations/EmptyBox';
+import { useTranslation } from '@/components/i18n/LanguageContext';
 
 export default function Inventory() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [movementDialogOpen, setMovementDialogOpen] = useState(false);
   const [scannerOpen, setScannerOpen] = useState(false);
@@ -234,10 +236,10 @@ export default function Inventory() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Inventory"
-        description="Track stock levels and movements across warehouses"
+        title={t('inventory.title')}
+        description={t('inventory.description')}
         icon={Boxes}
-        breadcrumbs={['Inventory', 'Stock']}
+        breadcrumbs={[t('inventory.title'), 'Stock']}
         actions={
           <div className="flex items-center gap-2">
             <Button 
@@ -245,14 +247,14 @@ export default function Inventory() {
               onClick={() => setScannerOpen(true)}
             >
               <ScanLine className="h-4 w-4 mr-2" />
-              Scan
+              {t('inventory.scan')}
             </Button>
             <Button 
               className="bg-sky-600 hover:bg-sky-700"
               onClick={() => setMovementDialogOpen(true)}
             >
               <ArrowUpDown className="h-4 w-4 mr-2" />
-              Record Movement
+              {t('inventory.recordMovement')}
             </Button>
           </div>
         }
@@ -261,25 +263,25 @@ export default function Inventory() {
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Total SKUs"
+          title={t('inventory.totalSKUs')}
           value={totalItems}
           icon={Package}
           color="indigo"
         />
         <StatCard
-          title="Total Value"
+          title={t('inventory.totalValue')}
           value={`$${totalValue.toLocaleString()}`}
           icon={TrendingUp}
           color="green"
         />
         <StatCard
-          title="Low Stock Items"
+          title={t('inventory.lowStock')}
           value={lowStockItems}
           icon={AlertTriangle}
           color={lowStockItems > 0 ? 'amber' : 'green'}
         />
         <StatCard
-          title="Today's Movements"
+          title={t('inventory.todayMovements')}
           value={movementsToday}
           icon={History}
           color="blue"
@@ -289,8 +291,8 @@ export default function Inventory() {
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="bg-slate-100 dark:bg-slate-800">
-          <TabsTrigger value="levels">Stock Levels</TabsTrigger>
-          <TabsTrigger value="movements">Movements</TabsTrigger>
+          <TabsTrigger value="levels">{t('inventory.stockLevels')}</TabsTrigger>
+          <TabsTrigger value="movements">{t('inventory.movements')}</TabsTrigger>
         </TabsList>
         
         <TabsContent value="levels" className="mt-4">

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/components/i18n/LanguageContext';
 import {
   LayoutDashboard,
   Package,

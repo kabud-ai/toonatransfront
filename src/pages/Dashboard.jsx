@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
@@ -45,8 +44,11 @@ import KPIDashboard from '@/components/kpis/KPIDashboard';
 import GanttChart from '@/components/planning/GanttChart';
 import ProductionFlow from '@/components/illustrations/ProductionFlow';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useTranslation } from '@/components/i18n/LanguageContext';
 
 export default function Dashboard() {
+  const { t } = useTranslation();
+
   const { data: manufacturingOrders = [] } = useQuery({
     queryKey: ['manufacturingOrders'],
     queryFn: () => base44.entities.ManufacturingOrder.list('-created_date', 50)
@@ -117,8 +119,8 @@ export default function Dashboard() {
       </div>
 
       <PageHeader
-        title="Dashboard"
-        description="Overview of your production operations"
+        title={t('dashboard.title')}
+        description={t('dashboard.description')}
         icon={LayoutDashboard}
         actions={
           <Button className="bg-sky-500 hover:bg-sky-600">
@@ -130,18 +132,18 @@ export default function Dashboard() {
 
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList className="bg-slate-100 dark:bg-slate-800">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="kpis">KPIs & Analytics</TabsTrigger>
-          <TabsTrigger value="planning">Planning</TabsTrigger>
+          <TabsTrigger value="overview">{t('dashboard.overview')}</TabsTrigger>
+          <TabsTrigger value="kpis">{t('dashboard.kpis')}</TabsTrigger>
+          <TabsTrigger value="planning">{t('dashboard.planning')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCard
-              title="Active Orders"
+              title={t('dashboard.activeOrders')}
               value={activeOrders}
-              subtitle={`${completedToday} completed today`}
+              subtitle={t('dashboard.completedToday', { count: completedToday })}
               icon={Factory}
               trend="up"
               trendValue="+12%"
@@ -149,27 +151,27 @@ export default function Dashboard() {
               color="sky"
             />
             <StatCard
-              title="Stock Value"
+              title={t('dashboard.stockValue')}
               value={`$${totalStockValue.toLocaleString()}`}
-              subtitle={`${lowStockItems} items low`}
+              subtitle={t('dashboard.lowStockItems', { count: lowStockItems })}
               icon={Package}
               trend={lowStockItems > 5 ? 'down' : 'up'}
               trendValue={lowStockItems > 5 ? `${lowStockItems} alerts` : 'Healthy'}
               color={lowStockItems > 5 ? 'amber' : 'green'}
             />
             <StatCard
-              title="Quality Rate"
+              title={t('dashboard.qualityRate')}
               value={`${passRate}%`}
-              subtitle={`${pendingInspections} pending`}
+              subtitle={t('dashboard.pendingInspections', { count: pendingInspections })}
               icon={ClipboardCheck}
               trend={passRate >= 95 ? 'up' : passRate >= 85 ? undefined : 'down'}
               trendValue={passRate >= 95 ? 'Excellent' : passRate >= 85 ? 'Good' : 'Needs attention'}
               color={passRate >= 95 ? 'green' : passRate >= 85 ? 'amber' : 'red'}
             />
             <StatCard
-              title="Maintenance"
+              title={t('dashboard.maintenance')}
               value={scheduledMaintenance}
-              subtitle="Scheduled this week"
+              subtitle={t('dashboard.scheduledThisWeek')}
               icon={Wrench}
               color="purple"
             />
