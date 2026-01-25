@@ -34,7 +34,9 @@ import {
   DollarSign,
   History,
   Download,
-  FileUp
+  FileUp,
+  AlertTriangle,
+  Layers
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -276,6 +278,19 @@ export default function RawMaterials() {
         <Badge variant="outline">{value || '-'}</Badge>
       )
     }
+  ];
+
+  // Summary stats
+  const totalMaterials = rawMaterials.length;
+  const totalStock = rawMaterials.reduce((sum, m) => sum + (m.instock || 0), 0);
+  const lowStockMaterials = rawMaterials.filter(m => (m.instock || 0) < 10).length;
+  const avgDensity = rawMaterials.length > 0 ? (rawMaterials.reduce((sum, m) => sum + (m.density || 0), 0) / rawMaterials.length).toFixed(2) : 0;
+
+  const summaryStats = [
+    { label: 'Total Matières', value: totalMaterials, icon: Boxes, color: 'sky' },
+    { label: 'Stock Total', value: totalStock.toFixed(0), icon: Package, color: 'green' },
+    { label: 'Stock Faible', value: lowStockMaterials, icon: AlertTriangle, color: lowStockMaterials > 0 ? 'amber' : 'green', highlight: lowStockMaterials > 0 },
+    { label: 'Densité Moy.', value: avgDensity, icon: Layers, color: 'purple' },
   ];
 
   const actions = [
