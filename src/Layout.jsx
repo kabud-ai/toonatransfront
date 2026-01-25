@@ -89,6 +89,7 @@ export default function Layout({ children, currentPageName }) {
           --primary: 56 189 248;
         }
       `}</style>
-    </div>
+      </div>
+    </LanguageProvider>
   );
 }
