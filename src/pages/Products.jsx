@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Package, Plus, Eye, Pencil, Trash2, Barcode, Upload, X, Download, FileUp } from 'lucide-react';
+import { Package, Plus, Eye, Pencil, Trash2, Barcode, Upload, X, Download, FileUp, CheckCircle, Boxes, Layers } from 'lucide-react';
 import { toast } from 'sonner';
 import { exportToCSV, parseCSV } from '@/components/utils/excelExport';
 
@@ -186,6 +186,15 @@ export default function Products() {
     { label: 'View', icon: Eye, onClick: (row) => { setSelectedProduct(row); setDialogOpen(true); } },
     { label: 'Edit', icon: Pencil, onClick: (row) => { setSelectedProduct(row); setDialogOpen(true); } },
     { label: 'Delete', icon: Trash2, onClick: (row) => deleteMutation.mutate(row.id), destructive: true }
+  ];
+
+  // Summary stats
+  const totalProducts = products.length;
+  const withImages = products.filter(p => p.image_url).length;
+
+  const summaryStats = [
+    { label: 'Total Produits', value: totalProducts, icon: Package, color: 'sky' },
+    { label: 'Avec Images', value: withImages, icon: CheckCircle, color: 'green' },
   ];
 
   return (
