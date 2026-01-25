@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import PageHeader from '@/components/common/PageHeader';
 import DataTable from '@/components/common/DataTable';
+import EntitySummary from '@/components/common/EntitySummary';
 import StatusBadge from '@/components/common/StatusBadge';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -214,6 +215,8 @@ export default function Products() {
           </div>
         }
       />
+
+      <EntitySummary stats={summaryStats} />
 
       <DataTable
         columns={columns}

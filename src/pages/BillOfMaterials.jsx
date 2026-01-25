@@ -5,6 +5,7 @@ import PageHeader from '@/components/common/PageHeader';
 import DataTable from '@/components/common/DataTable';
 import StatusBadge from '@/components/common/StatusBadge';
 import EmptyState from '@/components/common/EmptyState';
+import EntitySummary from '@/components/common/EntitySummary';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -34,7 +35,9 @@ import {
   GitBranch,
   DollarSign,
   Package,
-  X
+  X,
+  CheckCircle,
+  Clock
 } from 'lucide-react';
 
 export default function BillOfMaterials() {
@@ -207,6 +210,21 @@ export default function BillOfMaterials() {
     { label: 'Delete', icon: Trash2, onClick: (row) => deleteMutation.mutate(row.id), destructive: true }
   ];
 
+  // Summary stats
+  const totalBoms = boms.length;
+  const activeBoms = boms.filter(b => b.status === 'active').length;
+  const draftBoms = boms.filter(b => b.status === 'draft').length;
+  const avgComponents = boms.length > 0 ? Math.round(boms.reduce((sum, b) => sum + (b.components?.length || 0), 0) / boms.length) : 0;
+  const totalCost = boms.reduce((sum, b) => sum + (b.total_material_cost || 0), 0);
+
+  const summaryStats = [
+    { label: 'Total BOMs', value: totalBoms, icon: Layers, color: 'sky' },
+    { label: 'Active', value: activeBoms, icon: CheckCircle, color: 'green' },
+    { label: 'Draft', value: draftBoms, icon: Clock, color: 'amber' },
+    { label: 'Avg Components', value: avgComponents, icon: Package, color: 'purple' },
+    { label: 'Total Material Cost', value: `$${totalCost.toFixed(0)}`, icon: DollarSign, color: 'green' },
+  ];
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -228,6 +246,8 @@ export default function BillOfMaterials() {
           </Button>
         }
       />
+
+      <EntitySummary stats={summaryStats} />
 
       <DataTable
         columns={columns}
