@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import PageHeader from '@/components/common/PageHeader';
 import DataTable from '@/components/common/DataTable';
 import StatusBadge from '@/components/common/StatusBadge';
+import EntitySummary from '@/components/common/EntitySummary';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,8 +31,12 @@ import {
   Trash2,
   MapPin,
   Boxes,
-  TrendingUp
+  TrendingUp,
+  DollarSign,
+  CheckCircle,
+  PieChart
 } from 'lucide-react';
+import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
 
 export default function Warehouses() {
   const queryClient = useQueryClient();
@@ -177,6 +182,28 @@ export default function Warehouses() {
     { label: 'Delete', icon: Trash2, onClick: (row) => deleteMutation.mutate(row.id), destructive: true }
   ];
 
+  // Summary stats
+  const totalWarehouses = warehouses.length;
+  const activeWarehouses = warehouses.filter(w => w.is_active).length;
+  const totalItems = stockLevels.length;
+  const totalValue = stockLevels.reduce((sum, s) => sum + (s.total_value || 0), 0);
+
+  const summaryStats = [
+    { label: 'Total Entrepôts', value: totalWarehouses, icon: Building2, color: 'sky' },
+    { label: 'Actifs', value: activeWarehouses, icon: CheckCircle, color: 'green' },
+    { label: 'Articles en Stock', value: totalItems, icon: Boxes, color: 'purple' },
+    { label: 'Valeur Totale', value: `$${totalValue.toLocaleString()}`, icon: DollarSign, color: 'green' },
+  ];
+
+  // Chart data by warehouse type
+  const warehouseTypeData = [
+    { name: 'Matières Premières', value: warehouses.filter(w => w.type === 'raw_materials').length, color: '#f59e0b' },
+    { name: 'Produits Finis', value: warehouses.filter(w => w.type === 'finished_goods').length, color: '#10b981' },
+    { name: 'En Cours', value: warehouses.filter(w => w.type === 'wip').length, color: '#3b82f6' },
+    { name: 'Quarantine', value: warehouses.filter(w => w.type === 'quarantine').length, color: '#ef4444' },
+    { name: 'Pièces Détachées', value: warehouses.filter(w => w.type === 'spare_parts').length, color: '#8b5cf6' },
+  ].filter(d => d.value > 0);
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -194,6 +221,43 @@ export default function Warehouses() {
           </Button>
         }
       />
+
+      <EntitySummary stats={summaryStats} />
+
+      {/* Chart */}
+      {warehouseTypeData.length > 0 && (
+        <Card className="bg-white dark:bg-slate-900">
+          <CardHeader>
+            <CardTitle className="text-lg font-medium flex items-center gap-2">
+              <PieChart className="h-5 w-5 text-sky-600" />
+              Répartition par Type
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <RechartsPie>
+                  <Pie
+                    data={warehouseTypeData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={90}
+                    paddingAngle={4}
+                    dataKey="value"
+                    label={(entry) => entry.name}
+                  >
+                    {warehouseTypeData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <RechartsTooltip />
+                </RechartsPie>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <DataTable
         columns={columns}

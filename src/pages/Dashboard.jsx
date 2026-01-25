@@ -21,8 +21,12 @@ import {
   Clock,
   CheckCircle2,
   XCircle,
-  Timer
+  Timer,
+  Download,
+  FileText
 } from 'lucide-react';
+import { downloadAuditReport } from '@/components/utils/auditReport';
+import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { format } from 'date-fns';
@@ -48,6 +52,26 @@ import { useTranslation } from '@/components/i18n/LanguageContext';
 
 export default function Dashboard() {
   const { t } = useTranslation();
+
+  const { data: rawMaterials = [] } = useQuery({
+    queryKey: ['rawMaterials'],
+    queryFn: () => base44.entities.RawMaterial.list()
+  });
+
+  const { data: recipes = [] } = useQuery({
+    queryKey: ['recipes'],
+    queryFn: () => base44.entities.Recipe.list()
+  });
+
+  const { data: users = [] } = useQuery({
+    queryKey: ['users'],
+    queryFn: () => base44.entities.User.list()
+  });
+
+  const { data: warehouses = [] } = useQuery({
+    queryKey: ['warehouses'],
+    queryFn: () => base44.entities.Warehouse.list()
+  });
 
   const { data: manufacturingOrders = [] } = useQuery({
     queryKey: ['manufacturingOrders'],
@@ -93,6 +117,53 @@ export default function Dashboard() {
   const scheduledMaintenance = maintenanceOrders.filter(m => m.status === 'scheduled').length;
   const pendingPurchases = purchaseOrders.filter(p => ['draft', 'sent'].includes(p.status)).length;
 
+  const handleDownloadAuditReport = async () => {
+    const auditData = {
+      totalEntities: 10,
+      totalRecords: manufacturingOrders.length + stockLevels.length + qualityInspections.length + rawMaterials.length + recipes.length + users.length,
+      period: `${format(new Date(), 'yyyy-MM-dd')}`,
+      manufacturing: {
+        totalOrders: manufacturingOrders.length,
+        completedOrders: manufacturingOrders.filter(o => o.status === 'completed').length,
+        inProgressOrders: manufacturingOrders.filter(o => o.status === 'in_progress').length,
+        completionRate: manufacturingOrders.length > 0 ? Math.round((manufacturingOrders.filter(o => o.status === 'completed').length / manufacturingOrders.length) * 100) : 0,
+      },
+      quality: {
+        totalInspections: qualityInspections.length,
+        passRate: passRate,
+        pendingInspections: pendingInspections,
+      },
+      inventory: {
+        totalItems: stockLevels.length,
+        totalValue: totalStockValue,
+        lowStockItems: lowStockItems,
+        activeWarehouses: warehouses.filter(w => w.is_active).length,
+      },
+      materials: {
+        totalMaterials: rawMaterials.length,
+        totalStock: rawMaterials.reduce((sum, m) => sum + (m.instock || 0), 0),
+        lowStockMaterials: rawMaterials.filter(m => (m.instock || 0) < 10).length,
+      },
+      recipes: {
+        totalRecipes: recipes.length,
+        activeRecipes: recipes.filter(r => r.status === 'active').length,
+        avgCost: recipes.length > 0 ? recipes.reduce((sum, r) => sum + (r.cost || 0), 0) / recipes.length : 0,
+      },
+      users: {
+        totalUsers: users.length,
+        adminUsers: users.filter(u => u.role === 'admin').length,
+        regularUsers: users.filter(u => u.role === 'user').length,
+      },
+    };
+    
+    try {
+      await downloadAuditReport(auditData, 'rapport_audit_global');
+      toast.success('Rapport d\'audit téléchargé avec succès');
+    } catch (error) {
+      toast.error('Erreur lors de la génération du rapport');
+    }
+  };
+
   // Chart data
   const productionData = [
     { name: 'Mon', planned: 45, actual: 42 },
@@ -123,10 +194,20 @@ export default function Dashboard() {
         description={t('dashboard.description')}
         icon={LayoutDashboard}
         actions={
-          <Button className="bg-sky-500 hover:bg-sky-600">
-            <Calendar className="h-4 w-4 mr-2" />
-            {format(new Date(), 'MMM d, yyyy')}
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline"
+              onClick={handleDownloadAuditReport}
+              className="border-sky-600 text-sky-600 hover:bg-sky-50"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Rapport d'Audit
+            </Button>
+            <Button className="bg-sky-500 hover:bg-sky-600">
+              <Calendar className="h-4 w-4 mr-2" />
+              {format(new Date(), 'MMM d, yyyy')}
+            </Button>
+          </div>
         }
       />
 

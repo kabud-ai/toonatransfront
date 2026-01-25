@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import PageHeader from '@/components/common/PageHeader';
 import DataTable from '@/components/common/DataTable';
 import StatusBadge from '@/components/common/StatusBadge';
+import EntitySummary from '@/components/common/EntitySummary';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -33,8 +34,13 @@ import {
   ListOrdered,
   Package,
   X,
-  History
+  History,
+  CheckCircle,
+  FileText,
+  DollarSign,
+  TrendingUp
 } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
@@ -279,6 +285,27 @@ export default function Recipes() {
     { label: 'Supprimer', icon: Trash2, onClick: (row) => deleteMutation.mutate(row), destructive: true }
   ];
 
+  // Summary stats
+  const totalRecipes = recipes.length;
+  const activeRecipes = recipes.filter(r => r.status === 'active').length;
+  const draftRecipes = recipes.filter(r => r.status === 'draft').length;
+  const avgCost = recipes.length > 0 ? recipes.reduce((sum, r) => sum + (r.cost || 0), 0) / recipes.length : 0;
+  const totalSteps = recipes.reduce((sum, r) => sum + (r.steps?.length || 0), 0);
+
+  const summaryStats = [
+    { label: 'Total Recettes', value: totalRecipes, icon: BookOpen, color: 'sky' },
+    { label: 'Actives', value: activeRecipes, icon: CheckCircle, color: 'green' },
+    { label: 'Brouillons', value: draftRecipes, icon: FileText, color: 'amber' },
+    { label: 'Coût Moyen', value: `$${avgCost.toFixed(2)}`, icon: DollarSign, color: 'purple' },
+    { label: 'Total Étapes', value: totalSteps, icon: ListOrdered, color: 'blue' },
+  ];
+
+  // Top 5 costly recipes
+  const topCostlyRecipes = [...recipes]
+    .sort((a, b) => (b.cost || 0) - (a.cost || 0))
+    .slice(0, 5)
+    .map(r => ({ name: r.title.slice(0, 20), cost: r.cost || 0 }));
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -308,6 +335,33 @@ export default function Recipes() {
           </>
         }
       />
+
+      <EntitySummary stats={summaryStats} />
+
+      {/* Cost Chart */}
+      {topCostlyRecipes.length > 0 && (
+        <Card className="bg-white dark:bg-slate-900">
+          <CardHeader>
+            <CardTitle className="text-lg font-medium flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-indigo-600" />
+              Top 5 Recettes par Coût
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={topCostlyRecipes}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                  <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 11 }} />
+                  <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                  <RechartsTooltip />
+                  <Bar dataKey="cost" fill="#6366f1" radius={[8, 8, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <DataTable
         columns={columns}

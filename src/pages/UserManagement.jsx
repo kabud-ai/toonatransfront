@@ -3,9 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import PageHeader from '@/components/common/PageHeader';
 import DataTable from '@/components/common/DataTable';
+import EntitySummary from '@/components/common/EntitySummary';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -28,8 +30,11 @@ import {
   Eye,
   Shield,
   Mail,
-  Calendar
+  Calendar,
+  UserCheck,
+  TrendingUp
 } from 'lucide-react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 
@@ -108,6 +113,29 @@ export default function UserManagement() {
     { label: 'View Details', icon: Eye, onClick: (row) => { setSelectedUser(row); setDetailsOpen(true); } }
   ];
 
+  // Summary stats
+  const totalUsers = users.length;
+  const adminUsers = users.filter(u => u.role === 'admin').length;
+  const regularUsers = users.filter(u => u.role === 'user').length;
+  const recentUsers = users.filter(u => {
+    const createdDate = new Date(u.created_date);
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    return createdDate >= thirtyDaysAgo;
+  }).length;
+
+  const summaryStats = [
+    { label: 'Total Utilisateurs', value: totalUsers, icon: Users, color: 'sky' },
+    { label: 'Administrateurs', value: adminUsers, icon: Shield, color: 'purple' },
+    { label: 'Utilisateurs', value: regularUsers, icon: UserCheck, color: 'green' },
+    { label: 'Nouveaux (30j)', value: recentUsers, icon: TrendingUp, color: 'blue' },
+  ];
+
+  const roleData = [
+    { name: 'Administrateurs', value: adminUsers, color: '#8b5cf6' },
+    { name: 'Utilisateurs', value: regularUsers, color: '#10b981' },
+  ].filter(d => d.value > 0);
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -137,6 +165,40 @@ export default function UserManagement() {
           </div>
         </div>
       </div>
+
+      <EntitySummary stats={summaryStats} />
+
+      {/* Role Distribution Chart */}
+      {roleData.length > 0 && (
+        <Card className="bg-white dark:bg-slate-900">
+          <CardHeader>
+            <CardTitle className="text-lg font-medium">Répartition des Rôles</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={roleData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={90}
+                    paddingAngle={4}
+                    dataKey="value"
+                    label={(entry) => `${entry.name}: ${entry.value}`}
+                  >
+                    {roleData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <RechartsTooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <DataTable
         columns={columns}
