@@ -33,6 +33,10 @@ import LanguageSelector from '@/components/i18n/LanguageSelector';
 export default function Header({ user, collapsed, onMenuToggle, darkMode, onDarkModeToggle }) {
   const [searchOpen, setSearchOpen] = useState(false);
 
+  const handleLogout = async () => {
+    await base44.auth.logout();
+  };
+
   const notifications = [
     { id: 1, title: 'Low stock alert', message: 'Steel Rods below minimum level', type: 'warning', time: '5m ago' },
     { id: 2, title: 'Order completed', message: 'MO-2024-0156 finished production', type: 'success', time: '1h ago' },
