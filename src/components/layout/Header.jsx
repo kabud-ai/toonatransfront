@@ -144,16 +144,20 @@ export default function Header({ user, collapsed, onMenuToggle, darkMode, onDark
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2">
-              <User className="h-4 w-4" />
-              Profile
+            <DropdownMenuItem asChild className="gap-2 cursor-pointer">
+              <Link to={createPageUrl('UserProfile')}>
+                <User className="h-4 w-4" />
+                Profile
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="gap-2">
-              <Settings className="h-4 w-4" />
-              Settings
+            <DropdownMenuItem asChild className="gap-2 cursor-pointer">
+              <Link to={createPageUrl('Settings')}>
+                <Settings className="h-4 w-4" />
+                Settings
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 text-red-600">
+            <DropdownMenuItem onClick={handleLogout} className="gap-2 text-red-600 cursor-pointer">
               <LogOut className="h-4 w-4" />
               Log out
             </DropdownMenuItem>
