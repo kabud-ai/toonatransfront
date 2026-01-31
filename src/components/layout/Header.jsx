@@ -31,6 +31,7 @@ import NotificationCenter from '@/components/notifications/NotificationCenter';
 import LanguageSelector from '@/components/i18n/LanguageSelector';
 
 export default function Header({ user, collapsed, onMenuToggle, darkMode, onDarkModeToggle }) {
+  const { t } = useTranslation();
   const [searchOpen, setSearchOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -147,19 +148,19 @@ export default function Header({ user, collapsed, onMenuToggle, darkMode, onDark
             <DropdownMenuItem asChild className="gap-2 cursor-pointer">
               <Link to={createPageUrl('UserProfile')}>
                 <User className="h-4 w-4" />
-                Profile
+                {t('userProfile.title') || 'Profile'}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="gap-2 cursor-pointer">
               <Link to={createPageUrl('Settings')}>
                 <Settings className="h-4 w-4" />
-                Settings
+                {t('nav.settings')}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout} className="gap-2 text-red-600 cursor-pointer">
               <LogOut className="h-4 w-4" />
-              Log out
+              {t('userProfile.logout') || 'Log out'}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
