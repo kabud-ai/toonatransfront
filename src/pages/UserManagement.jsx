@@ -300,3 +300,5 @@ export default function UserManagement() {
     </div>
   );
 }
+
+export default withPermission(UserManagement, 'users', 'view');

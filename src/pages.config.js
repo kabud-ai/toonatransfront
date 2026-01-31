@@ -74,6 +74,7 @@ import SupplierCatalog from './pages/SupplierCatalog';
 import AutoReplenishment from './pages/AutoReplenishment';
 import GoodsReceipts from './pages/GoodsReceipts';
 import UserProfile from './pages/UserProfile';
+import RolesManagement from './pages/RolesManagement';
 import __Layout from './Layout.jsx';
 
 
@@ -105,6 +106,7 @@ export const PAGES = {
     "AutoReplenishment": AutoReplenishment,
     "GoodsReceipts": GoodsReceipts,
     "UserProfile": UserProfile,
+    "RolesManagement": RolesManagement,
 }
 
 export const pagesConfig = {
