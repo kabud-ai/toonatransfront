@@ -45,22 +45,89 @@ export default function DataTable({
   pageSize = 10,
   emptyMessage = "No data found",
   emptyIcon: EmptyIcon,
-  toolbar
+  toolbar,
+  onRefresh,
+  onExport,
+  exportFileName = "data",
+  filterOptions,
+  onFilterChange
 }) {
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const [activeFilters, setActiveFilters] = useState({});
+
+  const handleExportCSV = () => {
+    if (!sortedData.length) return;
+    
+    const headers = columns.map(col => col.label).join(',');
+    const rows = sortedData.map(row => 
+      columns.map(col => {
+        const value = row[col.key];
+        if (typeof value === 'string' && value.includes(',')) {
+          return `"${value}"`;
+        }
+        return value || '';
+      }).join(',')
+    );
+    
+    const csv = [headers, ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${exportFileName}_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  };
+
+  const handleRefresh = () => {
+    setSearch('');
+    setSelected([]);
+    setCurrentPage(1);
+    setActiveFilters({});
+    if (onRefresh) onRefresh();
+  };
+
+  const handleFilterToggle = (filterKey, value) => {
+    const newFilters = { ...activeFilters };
+    if (newFilters[filterKey] === value) {
+      delete newFilters[filterKey];
+    } else {
+      newFilters[filterKey] = value;
+    }
+    setActiveFilters(newFilters);
+    setCurrentPage(1);
+    if (onFilterChange) onFilterChange(newFilters);
+  };
 
   const filteredData = data?.filter(row => {
-    if (!search) return true;
-    return columns.some(col => {
-      const value = row[col.key];
-      if (typeof value === 'string') {
-        return value.toLowerCase().includes(search.toLowerCase());
-      }
-      return false;
-    });
+    // Search filter
+    if (search) {
+      const matchesSearch = columns.some(col => {
+        const value = row[col.key];
+        if (typeof value === 'string') {
+          return value.toLowerCase().includes(search.toLowerCase());
+        }
+        if (typeof value === 'number') {
+          return value.toString().includes(search);
+        }
+        return false;
+      });
+      if (!matchesSearch) return false;
+    }
+
+    // Custom filters
+    if (Object.keys(activeFilters).length > 0) {
+      return Object.entries(activeFilters).every(([key, value]) => {
+        return row[key] === value;
+      });
+    }
+
+    return true;
   }) || [];
 
   const sortedData = [...filteredData].sort((a, b) => {
@@ -139,13 +206,60 @@ export default function DataTable({
         </div>
         <div className="flex items-center gap-2">
           {toolbar}
-          <Button variant="outline" size="icon" className="h-9 w-9">
-            <Filter className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="icon" className="h-9 w-9">
+          {filterOptions && Object.keys(filterOptions).length > 0 && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon" className="h-9 w-9 relative">
+                  <Filter className="h-4 w-4" />
+                  {Object.keys(activeFilters).length > 0 && (
+                    <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-sky-500 text-white text-xs flex items-center justify-center">
+                      {Object.keys(activeFilters).length}
+                    </span>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                {Object.entries(filterOptions).map(([key, options]) => (
+                  <div key={key} className="px-2 py-2">
+                    <p className="text-xs font-medium text-slate-500 mb-1 capitalize">{key}</p>
+                    {options.map(option => (
+                      <DropdownMenuItem
+                        key={option.value}
+                        onClick={() => handleFilterToggle(key, option.value)}
+                        className={cn(
+                          "cursor-pointer",
+                          activeFilters[key] === option.value && "bg-sky-50 dark:bg-sky-900/20"
+                        )}
+                      >
+                        <Checkbox
+                          checked={activeFilters[key] === option.value}
+                          className="mr-2"
+                        />
+                        {option.label}
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="h-9 w-9"
+            onClick={handleRefresh}
+            title="Refresh data"
+          >
             <RefreshCw className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="icon" className="h-9 w-9">
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="h-9 w-9"
+            onClick={onExport || handleExportCSV}
+            title="Export to CSV"
+            disabled={!sortedData.length}
+          >
             <Download className="h-4 w-4" />
           </Button>
         </div>
