@@ -29,11 +29,13 @@ import {
 import { cn } from '@/lib/utils';
 import NotificationCenter from '@/components/notifications/NotificationCenter';
 import LanguageSelector from '@/components/i18n/LanguageSelector';
+import GlobalSearch from '@/components/search/GlobalSearch';
 import { useTranslation } from '@/components/i18n/LanguageContext';
 
 export default function Header({ user, collapsed, onMenuToggle, darkMode, onDarkModeToggle }) {
   const { t } = useTranslation();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
 
   const handleLogout = async () => {
     await base44.auth.logout();
@@ -57,22 +59,19 @@ export default function Header({ user, collapsed, onMenuToggle, darkMode, onDark
         </button>
 
         {/* Search */}
-        <div className={cn(
-          "hidden md:flex items-center transition-all duration-300",
-          searchOpen ? "w-80" : "w-64"
-        )}>
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-            <Input
-              placeholder="Search products, orders, suppliers..."
-              className="pl-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-indigo-500"
-              onFocus={() => setSearchOpen(true)}
-              onBlur={() => setSearchOpen(false)}
-            />
-            <kbd className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded">
+        <div className="hidden md:flex items-center w-64">
+          <button
+            onClick={() => setGlobalSearchOpen(true)}
+            className="relative w-full h-10 flex items-center px-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:border-slate-300 dark:hover:border-slate-600 transition-colors text-left group"
+          >
+            <Search className="h-4 w-4 text-slate-400 mr-3" />
+            <span className="text-sm text-slate-500 dark:text-slate-400">
+              {t('search.searchPlaceholder') || 'Rechercher...'}
+            </span>
+            <kbd className="absolute right-3 text-xs text-slate-400 bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded">
               ⌘K
             </kbd>
-          </div>
+          </button>
         </div>
       </div>
 
@@ -166,6 +165,9 @@ export default function Header({ user, collapsed, onMenuToggle, darkMode, onDark
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      {/* Global Search Dialog */}
+      <GlobalSearch open={globalSearchOpen} onOpenChange={setGlobalSearchOpen} />
     </header>
   );
 }

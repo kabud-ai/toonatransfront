@@ -369,6 +369,17 @@ const translations = {
       loadError: 'Erreur de chargement',
       avatarUpdated: 'Photo mise à jour',
     },
+    search: {
+      globalSearch: 'Recherche Globale',
+      searchPlaceholder: 'Rechercher produits, commandes, fournisseurs...',
+      filters: 'Filtres',
+      dateFrom: 'De',
+      dateTo: 'À',
+      clearFilters: 'Effacer',
+      resultsFound: 'résultats trouvés',
+      noResults: 'Aucun résultat trouvé',
+      tip: 'Astuce: Utilisez les filtres pour affiner votre recherche',
+    },
   },
   en: {
     common: {
@@ -739,6 +750,17 @@ const translations = {
       saved: 'Profile updated',
       loadError: 'Loading error',
       avatarUpdated: 'Avatar updated',
+    },
+    search: {
+      globalSearch: 'Global Search',
+      searchPlaceholder: 'Search products, orders, suppliers...',
+      filters: 'Filters',
+      dateFrom: 'From',
+      dateTo: 'To',
+      clearFilters: 'Clear',
+      resultsFound: 'results found',
+      noResults: 'No results found',
+      tip: 'Tip: Use filters to refine your search',
     },
   },
   ar: {
