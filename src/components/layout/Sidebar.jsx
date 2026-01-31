@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/components/i18n/LanguageContext';
+import { usePermissions } from '@/components/permissions/PermissionGuard';
 import {
   LayoutDashboard,
   Package,
@@ -79,12 +80,53 @@ const modules = [
     label: 'Administration',
     items: [
       { name: 'Utilisateurs', icon: Users, page: 'UserManagement' },
+      { name: 'Rôles & Permissions', icon: Shield, page: 'RolesManagement' },
       { name: 'Paramètres', icon: Settings, page: 'Settings' },
     ]
   }
 ];
 
 export default function Sidebar({ currentPage, collapsed, onToggle }) {
+  const { t } = useTranslation();
+  const { canView, isAdmin } = usePermissions();
+
+  // Permission mapping pour chaque page
+  const pagePermissions = {
+    'Dashboard': 'dashboard',
+    'Recipes': 'recipes',
+    'ProductionPlans': 'manufacturing_orders',
+    'Products': 'products',
+    'RawMaterials': 'products',
+    'Warehouses': 'warehouses',
+    'LotTracking': 'lots',
+    'StockAlerts': 'inventory',
+    'PurchaseOrders': 'purchase_orders',
+    'GoodsReceipts': 'goods_receipts',
+    'Suppliers': 'suppliers',
+    'SupplierCatalog': 'suppliers',
+    'AutoReplenishment': 'purchase_orders',
+    'Unities': 'settings',
+    'RecipeTypes': 'recipes',
+    'RecipeHistory': 'recipes',
+    'UserManagement': 'users',
+    'RolesManagement': 'roles',
+    'Settings': 'settings'
+  };
+
+  // Filtrer les modules selon les permissions
+  const getFilteredModules = () => {
+    return modules.map(module => ({
+      ...module,
+      items: module.items.filter(item => {
+        if (isAdmin) return true;
+        const permModule = pagePermissions[item.page];
+        return permModule ? canView(permModule) : false;
+      })
+    })).filter(module => module.items.length > 0);
+  };
+
+  const filteredModules = getFilteredModules();
+
   return (
     <TooltipProvider delayDuration={0}>
       <aside 
@@ -113,7 +155,7 @@ export default function Sidebar({ currentPage, collapsed, onToggle }) {
         {/* Navigation */}
         <ScrollArea className="flex-1 py-4">
           <nav className="px-2 space-y-6">
-            {modules.map((module) => (
+            {filteredModules.map((module) => (
               <div key={module.id}>
                 {!collapsed && module.label && (
                   <p className="px-3 text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-2">

@@ -37,15 +37,24 @@ import {
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
+import { useTranslation } from '@/components/i18n/LanguageContext';
+import { withPermission } from '@/components/permissions/PermissionGuard';
 
-export default function UserManagement() {
+function UserManagement() {
+  const { t } = useTranslation();
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [customRoleId, setCustomRoleId] = useState('');
 
   const { data: users = [], isLoading } = useQuery({
     queryKey: ['users'],
     queryFn: () => base44.entities.User.list('-created_date', 100)
+  });
+
+  const { data: roles = [] } = useQuery({
+    queryKey: ['roles'],
+    queryFn: () => base44.entities.Role.list()
   });
 
   const handleInvite = async (e) => {
@@ -94,11 +103,18 @@ export default function UserManagement() {
     {
       key: 'role',
       label: 'Role',
-      render: (value) => (
-        <Badge className={getRoleColor(value)}>
-          <Shield className="h-3 w-3 mr-1" />
-          {value === 'admin' ? 'Administrator' : 'User'}
-        </Badge>
+      render: (value, row) => (
+        <div className="flex flex-col gap-1">
+          <Badge className={getRoleColor(value)}>
+            <Shield className="h-3 w-3 mr-1" />
+            {value === 'admin' ? 'Administrator' : 'User'}
+          </Badge>
+          {row.custom_role_name && (
+            <Badge variant="outline" className="text-xs">
+              {row.custom_role_name}
+            </Badge>
+          )}
+        </div>
       )
     },
     {
@@ -243,6 +259,22 @@ export default function UserManagement() {
               <p className="text-xs text-slate-500">
                 Admins have full access. Users have limited permissions.
               </p>
+            </div>
+            <div className="space-y-2">
+              <Label>Rôle Personnalisé (optionnel)</Label>
+              <Select value={customRoleId} onValueChange={setCustomRoleId}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner un rôle" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value=" ">Aucun rôle personnalisé</SelectItem>
+                  {roles.filter(r => r.is_active).map(role => (
+                    <SelectItem key={role.id} value={role.id}>
+                      {role.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="flex justify-end gap-3 pt-4">
               <Button type="button" variant="outline" onClick={() => setInviteDialogOpen(false)}>

@@ -380,6 +380,16 @@ const translations = {
       noResults: 'Aucun résultat trouvé',
       tip: 'Astuce: Utilisez les filtres pour affiner votre recherche',
     },
+    roles: {
+      title: 'Gestion des Rôles',
+      description: 'Créez et gérez les rôles avec des permissions personnalisées',
+      newRole: 'Nouveau Rôle',
+      editRole: 'Modifier le Rôle',
+      roleName: 'Nom du Rôle',
+      roleCode: 'Code',
+      permissions: 'Permissions',
+      systemRole: 'Rôle Système',
+    },
   },
   en: {
     common: {
@@ -761,6 +771,16 @@ const translations = {
       resultsFound: 'results found',
       noResults: 'No results found',
       tip: 'Tip: Use filters to refine your search',
+    },
+    roles: {
+      title: 'Role Management',
+      description: 'Create and manage roles with custom permissions',
+      newRole: 'New Role',
+      editRole: 'Edit Role',
+      roleName: 'Role Name',
+      roleCode: 'Code',
+      permissions: 'Permissions',
+      systemRole: 'System Role',
     },
   },
   ar: {
