@@ -39,8 +39,10 @@ import {
   CheckCircle,
   Clock
 } from 'lucide-react';
+import { useTranslation } from '@/components/i18n/LanguageContext';
 
 export default function BillOfMaterials() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedBom, setSelectedBom] = useState(null);
@@ -150,7 +152,7 @@ export default function BillOfMaterials() {
   const columns = [
     {
       key: 'name',
-      label: 'BOM Name',
+      label: t('bom.name') || 'BOM Name',
       sortable: true,
       render: (value, row) => (
         <div className="flex items-center gap-3">
@@ -166,7 +168,7 @@ export default function BillOfMaterials() {
     },
     {
       key: 'product_id',
-      label: 'Product',
+      label: t('common.product') || 'Product',
       render: (value) => {
         const product = products.find(p => p.id === value);
         return product?.name || '-';
@@ -174,7 +176,7 @@ export default function BillOfMaterials() {
     },
     {
       key: 'components',
-      label: 'Components',
+      label: t('bom.components') || 'Components',
       render: (value) => (
         <Badge variant="outline">
           {value?.length || 0} items
@@ -183,31 +185,31 @@ export default function BillOfMaterials() {
     },
     {
       key: 'quantity_produced',
-      label: 'Output Qty',
+      label: t('bom.outputQty') || 'Output Qty',
       render: (value) => value || 1
     },
     {
       key: 'total_material_cost',
-      label: 'Material Cost',
+      label: t('bom.materialCost') || 'Material Cost',
       sortable: true,
       render: (value) => `$${(value || 0).toFixed(2)}`
     },
     {
       key: 'status',
-      label: 'Status',
+      label: t('common.status'),
       render: (value) => <StatusBadge status={value} />
     }
   ];
 
   const actions = [
-    { label: 'View', icon: Eye, onClick: openDetails },
-    { label: 'Edit', icon: Pencil, onClick: openEdit },
-    { label: 'Duplicate', icon: Copy, onClick: (row) => {
+    { label: t('common.view'), icon: Eye, onClick: openDetails },
+    { label: t('common.edit'), icon: Pencil, onClick: openEdit },
+    { label: t('common.duplicate') || 'Duplicate', icon: Copy, onClick: (row) => {
       setSelectedBom(null);
       setComponents(row.components || []);
       setDialogOpen(true);
     }},
-    { label: 'Delete', icon: Trash2, onClick: (row) => deleteMutation.mutate(row.id), destructive: true }
+    { label: t('common.delete'), icon: Trash2, onClick: (row) => deleteMutation.mutate(row.id), destructive: true }
   ];
 
   // Summary stats
@@ -218,20 +220,20 @@ export default function BillOfMaterials() {
   const totalCost = boms.reduce((sum, b) => sum + (b.total_material_cost || 0), 0);
 
   const summaryStats = [
-    { label: 'Total BOMs', value: totalBoms, icon: Layers, color: 'sky' },
-    { label: 'Active', value: activeBoms, icon: CheckCircle, color: 'green' },
-    { label: 'Draft', value: draftBoms, icon: Clock, color: 'amber' },
-    { label: 'Avg Components', value: avgComponents, icon: Package, color: 'purple' },
-    { label: 'Total Material Cost', value: `$${totalCost.toFixed(0)}`, icon: DollarSign, color: 'green' },
+    { label: t('bom.totalBoms') || 'Total BOMs', value: totalBoms, icon: Layers, color: 'sky' },
+    { label: t('bom.active') || 'Active', value: activeBoms, icon: CheckCircle, color: 'green' },
+    { label: t('bom.draft') || 'Draft', value: draftBoms, icon: Clock, color: 'amber' },
+    { label: t('bom.avgComponents') || 'Avg Components', value: avgComponents, icon: Package, color: 'purple' },
+    { label: t('bom.totalMaterialCost') || 'Total Material Cost', value: `$${totalCost.toFixed(0)}`, icon: DollarSign, color: 'green' },
   ];
 
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Bill of Materials"
-        description="Define product structures and component requirements"
+        title={t('nav.bom')}
+        description={t('bom.description') || 'Define product structures and component requirements'}
         icon={Layers}
-        breadcrumbs={['Production', 'Bill of Materials']}
+        breadcrumbs={[t('bom.production') || 'Production', t('nav.bom')]}
         actions={
           <Button 
             className="bg-indigo-600 hover:bg-indigo-700"
@@ -242,7 +244,7 @@ export default function BillOfMaterials() {
             }}
           >
             <Plus className="h-4 w-4 mr-2" />
-            New BOM
+            {t('bom.newBom') || 'New BOM'}
           </Button>
         }
       />
@@ -256,7 +258,7 @@ export default function BillOfMaterials() {
         selectable
         actions={actions}
         onRowClick={openDetails}
-        emptyMessage="No bill of materials defined"
+        emptyMessage={t('bom.noBoms') || 'No bill of materials defined'}
         emptyIcon={Layers}
       />
 
@@ -265,13 +267,13 @@ export default function BillOfMaterials() {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {selectedBom ? `Edit ${selectedBom.name}` : 'New Bill of Materials'}
+              {selectedBom ? `${t('common.edit')} ${selectedBom.name}` : t('bom.newBom') || 'New Bill of Materials'}
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>BOM Name *</Label>
+                <Label>{t('bom.name')} *</Label>
                 <Input 
                   name="name" 
                   defaultValue={selectedBom?.name}
@@ -280,7 +282,7 @@ export default function BillOfMaterials() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Output Product *</Label>
+                <Label>{t('bom.outputProduct') || 'Output Product'} *</Label>
                 <Select name="product_id" defaultValue={selectedBom?.product_id} required>
                   <SelectTrigger>
                     <SelectValue placeholder="Select product" />
@@ -298,14 +300,14 @@ export default function BillOfMaterials() {
 
             <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label>Version</Label>
+                <Label>{t('bom.version') || 'Version'}</Label>
                 <Input 
                   name="version" 
                   defaultValue={selectedBom?.version || '1.0'}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Output Quantity</Label>
+                <Label>{t('bom.outputQty') || 'Output Quantity'}</Label>
                 <Input 
                   name="quantity_produced" 
                   type="number"
@@ -314,7 +316,7 @@ export default function BillOfMaterials() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Status</Label>
+                <Label>{t('common.status')}</Label>
                 <Select name="status" defaultValue={selectedBom?.status || 'draft'}>
                   <SelectTrigger>
                     <SelectValue />
@@ -331,19 +333,19 @@ export default function BillOfMaterials() {
             {/* Components Section */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <Label className="text-base">Components</Label>
+                <Label className="text-base">{t('bom.components')}</Label>
                 <Button type="button" variant="outline" size="sm" onClick={addComponent}>
                   <Plus className="h-4 w-4 mr-1" />
-                  Add Component
+                  {t('bom.addComponent') || 'Add Component'}
                 </Button>
               </div>
               
               {components.length === 0 ? (
                 <div className="border-2 border-dashed rounded-lg p-8 text-center">
                   <Package className="h-8 w-8 text-slate-300 mx-auto mb-2" />
-                  <p className="text-sm text-slate-500">No components added</p>
+                  <p className="text-sm text-slate-500">{t('bom.noComponents') || 'No components added'}</p>
                   <Button type="button" variant="ghost" size="sm" onClick={addComponent} className="mt-2">
-                    Add your first component
+                    {t('bom.addFirstComponent') || 'Add your first component'}
                   </Button>
                 </div>
               ) : (
@@ -397,7 +399,7 @@ export default function BillOfMaterials() {
                   ))}
                   <div className="p-3 bg-slate-50 dark:bg-slate-800 flex justify-end">
                     <div className="text-sm">
-                      <span className="text-slate-500">Total Material Cost: </span>
+                      <span className="text-slate-500">{t('bom.totalMaterialCost')}: </span>
                       <span className="font-semibold">
                         ${components.reduce((sum, c) => sum + (c.cost * c.quantity), 0).toFixed(2)}
                       </span>
@@ -408,7 +410,7 @@ export default function BillOfMaterials() {
             </div>
 
             <div className="space-y-2">
-              <Label>Notes</Label>
+              <Label>{t('common.notes') || 'Notes'}</Label>
               <Textarea 
                 name="notes"
                 defaultValue={selectedBom?.notes}
@@ -418,10 +420,10 @@ export default function BillOfMaterials() {
 
             <div className="flex justify-end gap-3 pt-4">
               <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
-                Cancel
+                {t('common.cancel')}
               </Button>
               <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700">
-                {selectedBom ? 'Update' : 'Create'} BOM
+                {selectedBom ? t('common.update') || 'Update' : t('common.create')} {t('nav.bom')}
               </Button>
             </div>
           </form>
@@ -449,7 +451,7 @@ export default function BillOfMaterials() {
                         <Package className="h-5 w-5 text-indigo-600" />
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500">Output</p>
+                        <p className="text-xs text-slate-500">{t('bom.output') || 'Output'}</p>
                         <p className="font-medium">{selectedBom.quantity_produced || 1} units</p>
                       </div>
                     </div>
@@ -462,7 +464,7 @@ export default function BillOfMaterials() {
                         <DollarSign className="h-5 w-5 text-green-600" />
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500">Material Cost</p>
+                        <p className="text-xs text-slate-500">{t('bom.materialCost')}</p>
                         <p className="font-medium">${(selectedBom.total_material_cost || 0).toFixed(2)}</p>
                       </div>
                     </div>
@@ -475,7 +477,7 @@ export default function BillOfMaterials() {
                         <GitBranch className="h-5 w-5 text-purple-600" />
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500">Components</p>
+                        <p className="text-xs text-slate-500">{t('bom.components')}</p>
                         <p className="font-medium">{selectedBom.components?.length || 0} items</p>
                       </div>
                     </div>
@@ -484,7 +486,7 @@ export default function BillOfMaterials() {
               </div>
 
               <div>
-                <h3 className="font-medium mb-3">Components</h3>
+                <h3 className="font-medium mb-3">{t('bom.components')}</h3>
                 {selectedBom.components?.length > 0 ? (
                   <div className="border rounded-lg divide-y">
                     {selectedBom.components.map((comp, idx) => (
@@ -503,14 +505,14 @@ export default function BillOfMaterials() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-slate-500">No components defined</p>
+                  <p className="text-sm text-slate-500">{t('bom.noComponents')}</p>
                 )}
               </div>
 
               <div className="flex gap-2">
                 <Button variant="outline" onClick={() => openEdit(selectedBom)}>
                   <Pencil className="h-4 w-4 mr-2" />
-                  Edit
+                  {t('common.edit')}
                 </Button>
                 <Button variant="outline" onClick={() => {
                   setSelectedBom(null);
@@ -519,7 +521,7 @@ export default function BillOfMaterials() {
                   setDialogOpen(true);
                 }}>
                   <Copy className="h-4 w-4 mr-2" />
-                  Duplicate
+                  {t('common.duplicate') || 'Duplicate'}
                 </Button>
               </div>
             </div>
