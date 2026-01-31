@@ -70,6 +70,9 @@ import UserManagement from './pages/UserManagement';
 import Warehouses from './pages/Warehouses';
 import LotTracking from './pages/LotTracking';
 import StockAlerts from './pages/StockAlerts';
+import SupplierCatalog from './pages/SupplierCatalog';
+import AutoReplenishment from './pages/AutoReplenishment';
+import GoodsReceipts from './pages/GoodsReceipts';
 import __Layout from './Layout.jsx';
 
 
@@ -97,6 +100,9 @@ export const PAGES = {
     "Warehouses": Warehouses,
     "LotTracking": LotTracking,
     "StockAlerts": StockAlerts,
+    "SupplierCatalog": SupplierCatalog,
+    "AutoReplenishment": AutoReplenishment,
+    "GoodsReceipts": GoodsReceipts,
 }
 
 export const pagesConfig = {

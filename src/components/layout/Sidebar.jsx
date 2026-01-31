@@ -18,7 +18,12 @@ import {
   ClipboardCheck,
   Factory,
   AlertTriangle,
-  History
+  History,
+  BookMarked,
+  RefreshCw,
+  PackageCheck,
+  ShoppingCart,
+  Truck
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -47,6 +52,17 @@ const modules = [
       { name: 'Entrepôts', icon: Building2, page: 'Warehouses' },
       { name: 'Traçabilité Lots', icon: Layers, page: 'LotTracking' },
       { name: 'Alertes Stock', icon: AlertTriangle, page: 'StockAlerts' },
+    ]
+  },
+  {
+    id: 'procurement',
+    label: 'Approvisionnement',
+    items: [
+      { name: 'Bons de Commande', icon: ShoppingCart, page: 'PurchaseOrders' },
+      { name: 'Réceptions', icon: PackageCheck, page: 'GoodsReceipts' },
+      { name: 'Fournisseurs', icon: Truck, page: 'Suppliers' },
+      { name: 'Catalogue', icon: BookMarked, page: 'SupplierCatalog' },
+      { name: 'Auto-Réappro', icon: RefreshCw, page: 'AutoReplenishment' },
     ]
   },
   {
