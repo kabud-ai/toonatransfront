@@ -68,6 +68,8 @@ import Suppliers from './pages/Suppliers';
 import Unities from './pages/Unities';
 import UserManagement from './pages/UserManagement';
 import Warehouses from './pages/Warehouses';
+import LotTracking from './pages/LotTracking';
+import StockAlerts from './pages/StockAlerts';
 import __Layout from './Layout.jsx';
 
 
@@ -93,6 +95,8 @@ export const PAGES = {
     "Unities": Unities,
     "UserManagement": UserManagement,
     "Warehouses": Warehouses,
+    "LotTracking": LotTracking,
+    "StockAlerts": StockAlerts,
 }
 
 export const pagesConfig = {
