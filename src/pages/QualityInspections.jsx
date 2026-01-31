@@ -36,8 +36,10 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { format } from 'date-fns';
+import { useTranslation } from '@/components/i18n/LanguageContext';
 
 export default function QualityInspections() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedInspection, setSelectedInspection] = useState(null);
@@ -199,10 +201,10 @@ export default function QualityInspections() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Quality Inspections"
-        description="Manage quality control checks and inspections"
+        title={t('quality.title')}
+        description={t('quality.description')}
         icon={ClipboardCheck}
-        breadcrumbs={['Quality', 'Inspections']}
+        breadcrumbs={[t('nav.quality'), t('quality.inspections') || 'Inspections']}
         actions={
           <Button 
             className="bg-indigo-600 hover:bg-indigo-700"
@@ -213,7 +215,7 @@ export default function QualityInspections() {
             }}
           >
             <Plus className="h-4 w-4 mr-2" />
-            New Inspection
+            {t('quality.addInspection')}
           </Button>
         }
       />

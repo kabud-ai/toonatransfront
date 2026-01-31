@@ -37,8 +37,10 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { format } from 'date-fns';
+import { useTranslation } from '@/components/i18n/LanguageContext';
 
 export default function ManufacturingOrders() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -215,17 +217,17 @@ export default function ManufacturingOrders() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Manufacturing Orders"
-        description="Manage production orders and track progress"
+        title={t('manufacturing.title')}
+        description={t('manufacturing.description')}
         icon={Factory}
-        breadcrumbs={['Production', 'Manufacturing Orders']}
+        breadcrumbs={[t('manufacturing.production') || 'Production', t('manufacturing.title')]}
         actions={
           <Button 
             className="bg-indigo-600 hover:bg-indigo-700"
             onClick={() => { setSelectedOrder(null); setDialogOpen(true); }}
           >
             <Plus className="h-4 w-4 mr-2" />
-            New Order
+            {t('manufacturing.addOrder')}
           </Button>
         }
       />

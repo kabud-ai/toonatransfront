@@ -26,8 +26,10 @@ import {
   Phone,
   MapPin
 } from 'lucide-react';
+import { useTranslation } from '@/components/i18n/LanguageContext';
 
 export default function Suppliers() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedSupplier, setSelectedSupplier] = useState(null);
@@ -175,17 +177,17 @@ export default function Suppliers() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Suppliers"
-        description="Manage your supplier relationships"
+        title={t('suppliers.title') || t('nav.suppliers')}
+        description={t('suppliers.description')}
         icon={Truck}
-        breadcrumbs={['Procurement', 'Suppliers']}
+        breadcrumbs={[t('nav.purchasing'), t('nav.suppliers')]}
         actions={
           <Button 
             className="bg-indigo-600 hover:bg-indigo-700"
             onClick={() => { setSelectedSupplier(null); setDialogOpen(true); }}
           >
             <Plus className="h-4 w-4 mr-2" />
-            Add Supplier
+            {t('suppliers.addSupplier')}
           </Button>
         }
       />

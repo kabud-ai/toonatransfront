@@ -28,8 +28,10 @@ import {
   Layers
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslation } from '@/components/i18n/LanguageContext';
 
 export default function Settings() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   
   const { data: companies = [] } = useQuery({
@@ -117,25 +119,25 @@ export default function Settings() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Settings"
-        description="Configure your ERP system"
+        title={t('settings.title') || t('nav.settings')}
+        description={t('settings.description')}
         icon={SettingsIcon}
-        breadcrumbs={['Administration', 'Settings']}
+        breadcrumbs={[t('settings.administration') || 'Administration', t('nav.settings')]}
       />
 
       <Tabs defaultValue="general" className="space-y-6">
         <TabsList className="bg-slate-100 dark:bg-slate-800">
           <TabsTrigger value="general">
             <Globe className="h-4 w-4 mr-2" />
-            General
+            {t('settings.general')}
           </TabsTrigger>
           <TabsTrigger value="modules">
             <Package className="h-4 w-4 mr-2" />
-            Modules
+            {t('settings.modules')}
           </TabsTrigger>
           <TabsTrigger value="appearance">
             <Palette className="h-4 w-4 mr-2" />
-            Appearance
+            {t('settings.appearance')}
           </TabsTrigger>
         </TabsList>
 
@@ -143,9 +145,9 @@ export default function Settings() {
         <TabsContent value="general">
           <Card>
             <CardHeader>
-              <CardTitle>Company Information</CardTitle>
+              <CardTitle>{t('settings.companyInfo')}</CardTitle>
               <CardDescription>
-                Basic company details and preferences
+                {t('settings.companyInfoDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -233,7 +235,7 @@ export default function Settings() {
                 <div className="flex justify-end pt-4">
                   <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700">
                     <Save className="h-4 w-4 mr-2" />
-                    Save Changes
+                    {t('settings.saveChanges')}
                   </Button>
                 </div>
               </form>
@@ -245,9 +247,9 @@ export default function Settings() {
         <TabsContent value="modules">
           <Card>
             <CardHeader>
-              <CardTitle>Module Configuration</CardTitle>
+              <CardTitle>{t('settings.moduleConfig')}</CardTitle>
               <CardDescription>
-                Enable or disable specific modules for your organization
+                {t('settings.moduleConfigDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -275,7 +277,7 @@ export default function Settings() {
                 <div className="flex justify-end pt-6">
                   <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700">
                     <Save className="h-4 w-4 mr-2" />
-                    Save Modules
+                    {t('settings.saveModules')}
                   </Button>
                 </div>
               </form>
@@ -287,9 +289,9 @@ export default function Settings() {
         <TabsContent value="appearance">
           <Card>
             <CardHeader>
-              <CardTitle>Theme Customization</CardTitle>
+              <CardTitle>{t('settings.themeCustomization')}</CardTitle>
               <CardDescription>
-                Customize the look and feel of your ERP
+                {t('settings.themeCustomizationDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -312,7 +314,7 @@ export default function Settings() {
                 <div className="flex justify-end pt-4">
                   <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700">
                     <Save className="h-4 w-4 mr-2" />
-                    Save Theme
+                    {t('settings.saveTheme')}
                   </Button>
                 </div>
               </form>

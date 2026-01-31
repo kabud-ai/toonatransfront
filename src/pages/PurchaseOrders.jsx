@@ -37,8 +37,10 @@ import {
   X
 } from 'lucide-react';
 import { format } from 'date-fns';
+import { useTranslation } from '@/components/i18n/LanguageContext';
 
 export default function PurchaseOrders() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -226,17 +228,17 @@ export default function PurchaseOrders() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Purchase Orders"
-        description="Manage supplier orders and deliveries"
+        title={t('purchasing.title')}
+        description={t('purchasing.description')}
         icon={ShoppingCart}
-        breadcrumbs={['Procurement', 'Purchase Orders']}
+        breadcrumbs={[t('nav.purchasing'), t('purchasing.title')]}
         actions={
           <Button 
             className="bg-indigo-600 hover:bg-indigo-700"
             onClick={() => { setSelectedOrder(null); setLines([]); setDialogOpen(true); }}
           >
             <Plus className="h-4 w-4 mr-2" />
-            New Order
+            {t('purchasing.newOrder')}
           </Button>
         }
       />

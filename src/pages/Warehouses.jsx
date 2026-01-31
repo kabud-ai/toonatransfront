@@ -37,8 +37,10 @@ import {
   PieChart
 } from 'lucide-react';
 import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
+import { useTranslation } from '@/components/i18n/LanguageContext';
 
 export default function Warehouses() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedWarehouse, setSelectedWarehouse] = useState(null);
@@ -207,17 +209,17 @@ export default function Warehouses() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Warehouses"
-        description="Manage storage locations and inventory zones"
+        title={t('warehouses.title') || t('nav.warehouses')}
+        description={t('warehouses.description')}
         icon={Building2}
-        breadcrumbs={['Inventory', 'Warehouses']}
+        breadcrumbs={[t('nav.inventory'), t('nav.warehouses')]}
         actions={
           <Button 
             className="bg-indigo-600 hover:bg-indigo-700"
             onClick={() => { setSelectedWarehouse(null); setDialogOpen(true); }}
           >
             <Plus className="h-4 w-4 mr-2" />
-            Add Warehouse
+            {t('warehouses.addWarehouse')}
           </Button>
         }
       />
