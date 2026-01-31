@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import PageHeader from '@/components/common/PageHeader';
@@ -49,9 +49,15 @@ import GanttChart from '@/components/planning/GanttChart';
 import ProductionFlow from '@/components/illustrations/ProductionFlow';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from '@/components/i18n/LanguageContext';
+import { WIDGET_CATALOG } from '@/components/dashboard/WidgetLibrary';
+import WidgetCustomizer from '@/components/dashboard/WidgetCustomizer';
 
 export default function Dashboard() {
   const { t } = useTranslation();
+  const [user, setUser] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+  const [selectedWidgets, setSelectedWidgets] = useState([]);
+  const [dashboardPref, setDashboardPref] = useState(null);
 
   const { data: rawMaterials = [] } = useQuery({
     queryKey: ['rawMaterials'],
@@ -97,6 +103,70 @@ export default function Dashboard() {
     queryKey: ['purchaseOrders'],
     queryFn: () => base44.entities.PurchaseOrder.list('-created_date', 20)
   });
+
+  // Load user and role
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const userData = await base44.auth.me();
+        setUser(userData);
+        
+        // Load user's custom role
+        if (userData.custom_role_id) {
+          const role = await base44.entities.Role.list();
+          const userRole = role.find(r => r.id === userData.custom_role_id);
+          setUserRole(userRole);
+        }
+        
+        // Load dashboard preferences
+        const prefs = await base44.entities.DashboardPreference.filter({ user_email: userData.email });
+        if (prefs.length > 0) {
+          setDashboardPref(prefs[0]);
+          setSelectedWidgets(prefs[0].widgets?.map(w => w.id) || []);
+        } else {
+          // Set default widgets based on role
+          const roleCode = userRole?.code || 'director';
+          const defaultWidgets = WIDGET_CATALOG
+            .filter(w => w.roles.includes(roleCode))
+            .slice(0, 4)
+            .map(w => w.id);
+          setSelectedWidgets(defaultWidgets);
+        }
+      } catch (e) {
+        console.error('Error loading user:', e);
+      }
+    };
+    loadUser();
+  }, []);
+
+  // Save widget preferences
+  const handleSaveWidgets = async (widgetIds) => {
+    if (!user) return;
+    
+    const widgetData = widgetIds.map((id, index) => ({
+      id,
+      position: index,
+      size: WIDGET_CATALOG.find(w => w.id === id)?.defaultSize || 'medium'
+    }));
+    
+    try {
+      if (dashboardPref) {
+        await base44.entities.DashboardPreference.update(dashboardPref.id, {
+          widgets: widgetData
+        });
+      } else {
+        const newPref = await base44.entities.DashboardPreference.create({
+          user_email: user.email,
+          widgets: widgetData
+        });
+        setDashboardPref(newPref);
+      }
+      setSelectedWidgets(widgetIds);
+      toast.success(t('dashboard.widgets_saved'));
+    } catch (error) {
+      toast.error(t('common.error'));
+    }
+  };
 
   // Calculate stats
   const activeOrders = manufacturingOrders.filter(o => ['in_progress', 'planned', 'confirmed'].includes(o.status)).length;
@@ -212,11 +282,14 @@ export default function Dashboard() {
       />
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="bg-slate-100 dark:bg-slate-800">
-          <TabsTrigger value="overview">{t('dashboard.overview')}</TabsTrigger>
-          <TabsTrigger value="kpis">{t('dashboard.kpis')}</TabsTrigger>
-          <TabsTrigger value="planning">{t('dashboard.planning')}</TabsTrigger>
-        </TabsList>
+        <div className="flex items-center justify-between">
+          <TabsList className="bg-slate-100 dark:bg-slate-800">
+            <TabsTrigger value="overview">{t('dashboard.overview')}</TabsTrigger>
+            <TabsTrigger value="widgets">{t('dashboard.my_dashboard')}</TabsTrigger>
+            <TabsTrigger value="kpis">{t('dashboard.kpis')}</TabsTrigger>
+            <TabsTrigger value="planning">{t('dashboard.planning')}</TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="overview" className="space-y-6">
           {/* Stats Grid */}
@@ -485,6 +558,49 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
+
+        <TabsContent value="widgets" className="space-y-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h3 className="text-lg font-semibold">{t('dashboard.personalized_dashboard')}</h3>
+              <p className="text-sm text-muted-foreground">{t('dashboard.customize_dashboard_desc')}</p>
+            </div>
+            <WidgetCustomizer 
+              selectedWidgets={selectedWidgets}
+              onSave={handleSaveWidgets}
+              userRole={userRole}
+            />
+          </div>
+
+          {/* Widgets Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {selectedWidgets.map(widgetId => {
+              const widgetConfig = WIDGET_CATALOG.find(w => w.id === widgetId);
+              if (!widgetConfig) return null;
+              
+              const WidgetComponent = widgetConfig.component;
+              const colSpan = widgetConfig.defaultSize === 'large' ? 'md:col-span-2' : 
+                              widgetConfig.defaultSize === 'medium' ? 'md:col-span-1' : '';
+              
+              return (
+                <div key={widgetId} className={colSpan}>
+                  <WidgetComponent />
+                </div>
+              );
+            })}
+          </div>
+
+          {selectedWidgets.length === 0 && (
+            <Card className="p-12 text-center">
+              <p className="text-muted-foreground mb-4">{t('dashboard.no_widgets_selected')}</p>
+              <WidgetCustomizer 
+                selectedWidgets={selectedWidgets}
+                onSave={handleSaveWidgets}
+                userRole={userRole}
+              />
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="kpis" className="space-y-6">

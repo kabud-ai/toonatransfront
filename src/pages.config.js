@@ -47,10 +47,13 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import AutoReplenishment from './pages/AutoReplenishment';
 import BillOfMaterials from './pages/BillOfMaterials';
 import Dashboard from './pages/Dashboard';
 import Equipment from './pages/Equipment';
+import GoodsReceipts from './pages/GoodsReceipts';
 import Inventory from './pages/Inventory';
+import LotTracking from './pages/LotTracking';
 import MaintenanceOrders from './pages/MaintenanceOrders';
 import ManufacturingOrders from './pages/ManufacturingOrders';
 import ProductionPlanning from './pages/ProductionPlanning';
@@ -62,27 +65,27 @@ import RawMaterials from './pages/RawMaterials';
 import RecipeHistory from './pages/RecipeHistory';
 import RecipeTypes from './pages/RecipeTypes';
 import Recipes from './pages/Recipes';
+import RolesManagement from './pages/RolesManagement';
 import Settings from './pages/Settings';
 import Sites from './pages/Sites';
+import StockAlerts from './pages/StockAlerts';
+import SupplierCatalog from './pages/SupplierCatalog';
 import Suppliers from './pages/Suppliers';
 import Unities from './pages/Unities';
 import UserManagement from './pages/UserManagement';
-import Warehouses from './pages/Warehouses';
-import LotTracking from './pages/LotTracking';
-import StockAlerts from './pages/StockAlerts';
-import SupplierCatalog from './pages/SupplierCatalog';
-import AutoReplenishment from './pages/AutoReplenishment';
-import GoodsReceipts from './pages/GoodsReceipts';
 import UserProfile from './pages/UserProfile';
-import RolesManagement from './pages/RolesManagement';
+import Warehouses from './pages/Warehouses';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "AutoReplenishment": AutoReplenishment,
     "BillOfMaterials": BillOfMaterials,
     "Dashboard": Dashboard,
     "Equipment": Equipment,
+    "GoodsReceipts": GoodsReceipts,
     "Inventory": Inventory,
+    "LotTracking": LotTracking,
     "MaintenanceOrders": MaintenanceOrders,
     "ManufacturingOrders": ManufacturingOrders,
     "ProductionPlanning": ProductionPlanning,
@@ -94,19 +97,16 @@ export const PAGES = {
     "RecipeHistory": RecipeHistory,
     "RecipeTypes": RecipeTypes,
     "Recipes": Recipes,
+    "RolesManagement": RolesManagement,
     "Settings": Settings,
     "Sites": Sites,
+    "StockAlerts": StockAlerts,
+    "SupplierCatalog": SupplierCatalog,
     "Suppliers": Suppliers,
     "Unities": Unities,
     "UserManagement": UserManagement,
-    "Warehouses": Warehouses,
-    "LotTracking": LotTracking,
-    "StockAlerts": StockAlerts,
-    "SupplierCatalog": SupplierCatalog,
-    "AutoReplenishment": AutoReplenishment,
-    "GoodsReceipts": GoodsReceipts,
     "UserProfile": UserProfile,
-    "RolesManagement": RolesManagement,
+    "Warehouses": Warehouses,
 }
 
 export const pagesConfig = {
