@@ -16,7 +16,9 @@ import {
   BarChart3,
   Layers,
   ClipboardCheck,
-  Factory
+  Factory,
+  AlertTriangle,
+  History
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -43,6 +45,8 @@ const modules = [
     items: [
       { name: 'Matières Premières', icon: Boxes, page: 'RawMaterials' },
       { name: 'Entrepôts', icon: Building2, page: 'Warehouses' },
+      { name: 'Traçabilité Lots', icon: Layers, page: 'LotTracking' },
+      { name: 'Alertes Stock', icon: AlertTriangle, page: 'StockAlerts' },
     ]
   },
   {
