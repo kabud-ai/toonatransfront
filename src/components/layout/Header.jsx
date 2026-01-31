@@ -29,6 +29,7 @@ import {
 import { cn } from '@/lib/utils';
 import NotificationCenter from '@/components/notifications/NotificationCenter';
 import LanguageSelector from '@/components/i18n/LanguageSelector';
+import { useTranslation } from '@/components/i18n/LanguageContext';
 
 export default function Header({ user, collapsed, onMenuToggle, darkMode, onDarkModeToggle }) {
   const { t } = useTranslation();
