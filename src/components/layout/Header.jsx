@@ -91,8 +91,15 @@ export default function Header({ user, collapsed, onMenuToggle, darkMode, onDark
         </Button>
 
         {/* Help */}
-        <Button variant="ghost" size="icon" className="text-slate-600 dark:text-slate-400">
-          <HelpCircle className="h-5 w-5" />
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="text-slate-600 dark:text-slate-400"
+          asChild
+        >
+          <Link to={createPageUrl('Documentation')}>
+            <HelpCircle className="h-5 w-5" />
+          </Link>
         </Button>
 
         {/* Notifications */}
@@ -130,37 +137,44 @@ export default function Header({ user, collapsed, onMenuToggle, darkMode, onDark
             <Button variant="ghost" className="gap-2 pl-2 pr-3">
               <Avatar className="h-8 w-8">
                 <AvatarImage src={user?.avatar} />
-                <AvatarFallback className="bg-indigo-600 text-white text-sm">
-                  {user?.full_name?.charAt(0) || 'U'}
+                <AvatarFallback className="bg-sky-600 text-white text-sm">
+                  {user?.full_name?.split(' ').map(n => n[0]).join('').substring(0, 2) || user?.email?.charAt(0).toUpperCase() || 'U'}
                 </AvatarFallback>
               </Avatar>
               <div className="hidden md:flex flex-col items-start">
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                  {user?.full_name || 'User'}
+                  {user?.full_name || user?.email?.split('@')[0] || 'Utilisateur'}
                 </span>
-                <span className="text-xs text-slate-500 capitalize">{user?.role || 'Admin'}</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400 capitalize">
+                  {user?.role === 'admin' ? t('common.admin') || 'Administrateur' : t('common.user') || 'Utilisateur'}
+                </span>
               </div>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuContent align="end" className="w-64">
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium leading-none">{user?.full_name || 'Utilisateur'}</p>
+                <p className="text-xs leading-none text-slate-500 dark:text-slate-400">{user?.email}</p>
+              </div>
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild className="gap-2 cursor-pointer">
               <Link to={createPageUrl('UserProfile')}>
                 <User className="h-4 w-4" />
-                {t('userProfile.title') || 'Profile'}
+                {t('userProfile.title') || 'Profil'}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="gap-2 cursor-pointer">
               <Link to={createPageUrl('Settings')}>
                 <Settings className="h-4 w-4" />
-                {t('nav.settings')}
+                {t('nav.settings') || 'Paramètres'}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout} className="gap-2 text-red-600 cursor-pointer">
+            <DropdownMenuItem onClick={handleLogout} className="gap-2 text-red-600 dark:text-red-400 cursor-pointer">
               <LogOut className="h-4 w-4" />
-              {t('userProfile.logout') || 'Log out'}
+              {t('userProfile.logout') || 'Déconnexion'}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
