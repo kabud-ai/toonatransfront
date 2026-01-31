@@ -136,7 +136,7 @@ export default function Header({ user, collapsed, onMenuToggle, darkMode, onDark
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="gap-2 pl-2 pr-3">
               <Avatar className="h-8 w-8">
-                <AvatarImage src={user?.avatar} />
+                <AvatarImage src={user?.avatar_url} />
                 <AvatarFallback className="bg-sky-600 text-white text-sm">
                   {user?.full_name?.split(' ').map(n => n[0]).join('').substring(0, 2) || user?.email?.charAt(0).toUpperCase() || 'U'}
                 </AvatarFallback>
