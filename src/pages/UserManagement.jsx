@@ -40,7 +40,7 @@ import { toast } from 'sonner';
 import { useTranslation } from '@/components/i18n/LanguageContext';
 import { withPermission } from '@/components/permissions/PermissionGuard';
 
-function UserManagement() {
+function UserManagementPage() {
   const { t } = useTranslation();
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -333,4 +333,4 @@ function UserManagement() {
   );
 }
 
-export default withPermission(UserManagement, 'users', 'view');
+export default withPermission(UserManagementPage, 'users', 'view');
