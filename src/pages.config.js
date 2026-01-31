@@ -75,6 +75,7 @@ import Unities from './pages/Unities';
 import UserManagement from './pages/UserManagement';
 import UserProfile from './pages/UserProfile';
 import Warehouses from './pages/Warehouses';
+import Documentation from './pages/Documentation';
 import __Layout from './Layout.jsx';
 
 
@@ -107,6 +108,7 @@ export const PAGES = {
     "UserManagement": UserManagement,
     "UserProfile": UserProfile,
     "Warehouses": Warehouses,
+    "Documentation": Documentation,
 }
 
 export const pagesConfig = {
