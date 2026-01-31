@@ -50,6 +50,7 @@
 import AutoReplenishment from './pages/AutoReplenishment';
 import BillOfMaterials from './pages/BillOfMaterials';
 import Dashboard from './pages/Dashboard';
+import Documentation from './pages/Documentation';
 import Equipment from './pages/Equipment';
 import GoodsReceipts from './pages/GoodsReceipts';
 import Inventory from './pages/Inventory';
@@ -75,7 +76,6 @@ import Unities from './pages/Unities';
 import UserManagement from './pages/UserManagement';
 import UserProfile from './pages/UserProfile';
 import Warehouses from './pages/Warehouses';
-import Documentation from './pages/Documentation';
 import __Layout from './Layout.jsx';
 
 
@@ -83,6 +83,7 @@ export const PAGES = {
     "AutoReplenishment": AutoReplenishment,
     "BillOfMaterials": BillOfMaterials,
     "Dashboard": Dashboard,
+    "Documentation": Documentation,
     "Equipment": Equipment,
     "GoodsReceipts": GoodsReceipts,
     "Inventory": Inventory,
@@ -108,7 +109,6 @@ export const PAGES = {
     "UserManagement": UserManagement,
     "UserProfile": UserProfile,
     "Warehouses": Warehouses,
-    "Documentation": Documentation,
 }
 
 export const pagesConfig = {

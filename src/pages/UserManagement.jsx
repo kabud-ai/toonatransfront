@@ -44,8 +44,10 @@ function UserManagementPage() {
   const { t } = useTranslation();
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [editRoleDialogOpen, setEditRoleDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [customRoleId, setCustomRoleId] = useState('');
+  const [editingRoleId, setEditingRoleId] = useState('');
 
   const { data: users = [], isLoading } = useQuery({
     queryKey: ['users'],
@@ -125,8 +127,31 @@ function UserManagementPage() {
     }
   ];
 
+  const handleChangeRole = async (e) => {
+    e.preventDefault();
+    if (!selectedUser) return;
+
+    try {
+      const selectedRole = roles.find(r => r.id === editingRoleId);
+      await base44.entities.User.update(selectedUser.id, {
+        custom_role_id: editingRoleId || null,
+        custom_role_name: selectedRole?.name || null
+      });
+      toast.success('Rôle mis à jour avec succès');
+      setEditRoleDialogOpen(false);
+      window.location.reload();
+    } catch (error) {
+      toast.error('Échec de la mise à jour du rôle');
+    }
+  };
+
   const actions = [
-    { label: 'View Details', icon: Eye, onClick: (row) => { setSelectedUser(row); setDetailsOpen(true); } }
+    { label: 'View Details', icon: Eye, onClick: (row) => { setSelectedUser(row); setDetailsOpen(true); } },
+    { label: 'Change Role', icon: Shield, onClick: (row) => { 
+      setSelectedUser(row); 
+      setEditingRoleId(row.custom_role_id || '');
+      setEditRoleDialogOpen(true); 
+    } }
   ];
 
   // Summary stats
@@ -305,9 +330,16 @@ function UserManagementPage() {
                 </Avatar>
                 <div>
                   <h3 className="font-semibold text-lg">{selectedUser.full_name}</h3>
-                  <Badge className={getRoleColor(selectedUser.role)}>
-                    {selectedUser.role === 'admin' ? 'Administrator' : 'User'}
-                  </Badge>
+                  <div className="flex flex-col gap-1 mt-1">
+                    <Badge className={getRoleColor(selectedUser.role)}>
+                      {selectedUser.role === 'admin' ? 'Administrator' : 'User'}
+                    </Badge>
+                    {selectedUser.custom_role_name && (
+                      <Badge variant="outline" className="text-xs">
+                        {selectedUser.custom_role_name}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -324,9 +356,135 @@ function UserManagementPage() {
                     {selectedUser.created_date ? format(new Date(selectedUser.created_date), 'MMMM d, yyyy') : '-'}
                   </span>
                 </div>
+                {selectedUser.job_title && (
+                  <div className="flex items-center gap-3 text-sm">
+                    <Shield className="h-4 w-4 text-slate-400" />
+                    <span className="text-slate-600 dark:text-slate-400">Poste:</span>
+                    <span className="font-medium">{selectedUser.job_title}</span>
+                  </div>
+                )}
+                {selectedUser.department && (
+                  <div className="flex items-center gap-3 text-sm">
+                    <Users className="h-4 w-4 text-slate-400" />
+                    <span className="text-slate-600 dark:text-slate-400">Département:</span>
+                    <span className="font-medium">{selectedUser.department}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="pt-4 border-t">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => {
+                    setEditingRoleId(selectedUser.custom_role_id || '');
+                    setEditRoleDialogOpen(true);
+                    setDetailsOpen(false);
+                  }}
+                >
+                  <Shield className="h-4 w-4 mr-2" />
+                  Changer le Rôle
+                </Button>
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Role Dialog */}
+      <Dialog open={editRoleDialogOpen} onOpenChange={setEditRoleDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Changer le Rôle</DialogTitle>
+            <DialogDescription>
+              Attribuer un rôle personnalisé à {selectedUser?.full_name}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <form onSubmit={handleChangeRole} className="space-y-4">
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/50 rounded-lg p-3">
+              <div className="flex items-start gap-2">
+                <Shield className="h-4 w-4 text-amber-600 dark:text-amber-400 mt-0.5" />
+                <p className="text-sm text-amber-800 dark:text-amber-400">
+                  Le rôle système ({selectedUser?.role === 'admin' ? 'Administrator' : 'User'}) reste inchangé. 
+                  Le rôle personnalisé définit les permissions spécifiques.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Rôle Personnalisé</Label>
+              <Select value={editingRoleId} onValueChange={setEditingRoleId}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner un rôle" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={null}>Aucun rôle personnalisé</SelectItem>
+                  {roles.filter(r => r.is_active).map(role => (
+                    <SelectItem key={role.id} value={role.id}>
+                      <div className="flex items-center gap-2">
+                        <Shield className="h-3 w-3" />
+                        {role.name}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-slate-500">
+                Le rôle personnalisé définit les permissions d'accès aux modules
+              </p>
+            </div>
+
+            {editingRoleId && (
+              <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-3">
+                <p className="text-sm font-medium mb-2">Permissions du rôle sélectionné:</p>
+                {(() => {
+                  const selectedRole = roles.find(r => r.id === editingRoleId);
+                  if (!selectedRole?.permissions) return null;
+                  
+                  const permissionsList = Object.entries(selectedRole.permissions)
+                    .filter(([_, perms]) => Object.values(perms).some(v => v === true))
+                    .map(([module, perms]) => ({
+                      module,
+                      actions: Object.entries(perms)
+                        .filter(([_, enabled]) => enabled)
+                        .map(([action]) => action)
+                    }))
+                    .filter(p => p.actions.length > 0);
+
+                  return permissionsList.length > 0 ? (
+                    <div className="space-y-1 text-xs">
+                      {permissionsList.slice(0, 5).map(({ module, actions }) => (
+                        <div key={module} className="flex items-center gap-2">
+                          <Badge variant="outline" className="text-xs">
+                            {module}
+                          </Badge>
+                          <span className="text-slate-600 dark:text-slate-400">
+                            {actions.join(', ')}
+                          </span>
+                        </div>
+                      ))}
+                      {permissionsList.length > 5 && (
+                        <p className="text-slate-500">+ {permissionsList.length - 5} autres modules...</p>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-slate-500">Aucune permission définie</p>
+                  );
+                })()}
+              </div>
+            )}
+
+            <div className="flex justify-end gap-3 pt-4">
+              <Button type="button" variant="outline" onClick={() => setEditRoleDialogOpen(false)}>
+                Annuler
+              </Button>
+              <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700">
+                <Shield className="h-4 w-4 mr-2" />
+                Mettre à Jour
+              </Button>
+            </div>
+          </form>
         </DialogContent>
       </Dialog>
     </div>
