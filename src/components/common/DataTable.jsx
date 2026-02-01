@@ -312,13 +312,14 @@ export default function DataTable({
                 </TableCell>
               </TableRow>
             ) : (
-              paginatedData.map((row) => (
+              paginatedData.map((row, index) => (
                 <TableRow 
                   key={row.id}
                   className={cn(
                     "transition-colors",
                     onRowClick && "cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50",
-                    selected.includes(row.id) && "bg-sky-50 dark:bg-sky-900/10"
+                    selected.includes(row.id) && "bg-sky-50 dark:bg-sky-900/10",
+                    index % 2 === 0 ? "bg-white dark:bg-slate-900" : "bg-slate-50/50 dark:bg-slate-800/30"
                   )}
                   onClick={() => onRowClick?.(row)}
                 >
@@ -344,16 +345,23 @@ export default function DataTable({
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          {actions.map((action, idx) => (
-                            <DropdownMenuItem 
-                              key={idx}
-                              onClick={() => action.onClick(row)}
-                              className={cn(action.destructive && "text-red-600")}
-                            >
-                              {action.icon && <action.icon className="h-4 w-4 mr-2" />}
-                              {action.label}
-                            </DropdownMenuItem>
-                          ))}
+                          {actions.map((action, idx) => {
+                            const isDisabled = action.disabled ? action.disabled(row) : false;
+                            return (
+                              <DropdownMenuItem 
+                                key={idx}
+                                onClick={() => !isDisabled && action.onClick(row)}
+                                disabled={isDisabled}
+                                className={cn(
+                                  action.destructive && "text-red-600",
+                                  isDisabled && "opacity-50 cursor-not-allowed"
+                                )}
+                              >
+                                {action.icon && <action.icon className="h-4 w-4 mr-2" />}
+                                {action.label}
+                              </DropdownMenuItem>
+                            );
+                          })}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

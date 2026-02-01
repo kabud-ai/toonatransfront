@@ -15,7 +15,8 @@ import {
   XCircle,
   Clock,
   AlertTriangle,
-  Play
+  Play,
+  Package
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
@@ -301,6 +302,22 @@ export default function AutoReplenishment() {
         actions={actions}
         emptyMessage={t('autoReplenishment.noSuggestions') || 'Aucune suggestion'}
         emptyIcon={RefreshCw}
+        onRefresh={() => queryClient.invalidateQueries({ queryKey: ['replenishmentSuggestions'] })}
+        exportFileName="replenishment_suggestions"
+        filterOptions={{
+          status: [
+            { label: 'En attente', value: 'pending' },
+            { label: 'Approuvé', value: 'approved' },
+            { label: 'Commandé', value: 'ordered' },
+            { label: 'Rejeté', value: 'rejected' }
+          ],
+          priority: [
+            { label: 'Critique', value: 'critical' },
+            { label: 'Élevée', value: 'high' },
+            { label: 'Moyenne', value: 'medium' },
+            { label: 'Basse', value: 'low' }
+          ]
+        }}
       />
     </div>
   );
