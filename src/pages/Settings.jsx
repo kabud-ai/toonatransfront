@@ -41,6 +41,28 @@ export default function Settings() {
 
   const company = companies[0] || null;
 
+  // Charger la couleur sauvegardée au montage
+  React.useEffect(() => {
+    const savedColor = localStorage.getItem('erp_primary_color') || company?.primary_color;
+    if (savedColor) {
+      const root = document.documentElement;
+      const rgb = hexToRgb(savedColor);
+      if (rgb) {
+        root.style.setProperty('--primary', `${rgb.r} ${rgb.g} ${rgb.b}`);
+        root.style.setProperty('--primary-foreground', '255 255 255');
+      }
+    }
+  }, [company]);
+
+  const hexToRgb = (hex) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  };
+
   const updateCompany = useMutation({
     mutationFn: ({ id, data }) => base44.entities.Company.update(id, data),
     onSuccess: () => {
@@ -97,12 +119,27 @@ export default function Settings() {
     e.preventDefault();
     const formData = new FormData(e.target);
     
+    const primaryColor = formData.get('primary_color');
+    
+    // Appliquer immédiatement les couleurs CSS
+    const root = document.documentElement;
+    const rgb = hexToRgb(primaryColor);
+    if (rgb) {
+      root.style.setProperty('--primary', `${rgb.r} ${rgb.g} ${rgb.b}`);
+      root.style.setProperty('--primary-foreground', '255 255 255');
+      
+      // Sauvegarder dans localStorage pour persistance
+      localStorage.setItem('erp_primary_color', primaryColor);
+    }
+    
     const data = {
-      primary_color: formData.get('primary_color')
+      primary_color: primaryColor
     };
 
     if (company) {
       updateCompany.mutate({ id: company.id, data });
+    } else {
+      toast.success('Thème appliqué avec succès');
     }
   };
 
@@ -296,25 +333,42 @@ export default function Settings() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSaveTheme} className="space-y-6">
-                <div className="space-y-2">
-                  <Label>Primary Color</Label>
-                  <div className="flex items-center gap-4">
-                    <Input 
-                      name="primary_color" 
-                      type="color"
-                      defaultValue={company?.primary_color || '#4F46E5'}
-                      className="w-24 h-10"
-                    />
-                    <span className="text-sm text-slate-500">
-                      Choose the main color for buttons and highlights
-                    </span>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Couleur Principale</Label>
+                    <div className="flex items-center gap-4">
+                      <Input 
+                        name="primary_color" 
+                        type="color"
+                        defaultValue={localStorage.getItem('erp_primary_color') || company?.primary_color || '#4F46E5'}
+                        className="w-24 h-10"
+                      />
+                      <span className="text-sm text-slate-500">
+                        Choisissez la couleur principale pour les boutons et les éléments
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
+                    <p className="text-sm font-medium mb-3">Aperçu des couleurs :</p>
+                    <div className="flex flex-wrap gap-2">
+                      <Button className="bg-primary hover:bg-primary/90">Bouton Principal</Button>
+                      <Button variant="outline">Bouton Secondaire</Button>
+                      <Button variant="destructive">Bouton Danger</Button>
+                    </div>
+                  </div>
+
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900/50 rounded-lg p-3">
+                    <p className="text-sm text-blue-800 dark:text-blue-300">
+                      💡 Les changements sont appliqués immédiatement et sauvegardés dans votre navigateur
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex justify-end pt-4">
-                  <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700">
+                  <Button type="submit">
                     <Save className="h-4 w-4 mr-2" />
-                    {t('settings.saveTheme')}
+                    {t('settings.saveTheme') || 'Appliquer le Thème'}
                   </Button>
                 </div>
               </form>
