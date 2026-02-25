@@ -76,6 +76,11 @@ import Unities from './pages/Unities';
 import UserManagement from './pages/UserManagement';
 import UserProfile from './pages/UserProfile';
 import Warehouses from './pages/Warehouses';
+import Workstations from './pages/Workstations';
+import JobCards from './pages/JobCards';
+import ScrapManagement from './pages/ScrapManagement';
+import Routings from './pages/Routings';
+import Subcontracting from './pages/Subcontracting';
 import __Layout from './Layout.jsx';
 
 
@@ -109,6 +114,11 @@ export const PAGES = {
     "UserManagement": UserManagement,
     "UserProfile": UserProfile,
     "Warehouses": Warehouses,
+    "Workstations": Workstations,
+    "JobCards": JobCards,
+    "ScrapManagement": ScrapManagement,
+    "Routings": Routings,
+    "Subcontracting": Subcontracting,
 }
 
 export const pagesConfig = {
