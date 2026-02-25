@@ -25,7 +25,11 @@ import {
   PackageCheck,
   ShoppingCart,
   Truck,
-  Shield
+  Shield,
+  ClipboardList,
+  GitBranch,
+  PackageX,
+  Hammer
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -42,6 +46,12 @@ const modules = [
     label: 'Production',
     items: [
       { name: 'Recettes', icon: Layers, page: 'Recipes' },
+      { name: 'Ordres de Fabrication', icon: Factory, page: 'ManufacturingOrders' },
+      { name: 'Fiches de Travail', icon: ClipboardList, page: 'JobCards' },
+      { name: 'Postes de Travail', icon: Hammer, page: 'Workstations' },
+      { name: 'Gammes', icon: GitBranch, page: 'Routings' },
+      { name: 'Sous-Traitance', icon: Truck, page: 'Subcontracting' },
+      { name: 'Rebuts', icon: PackageX, page: 'ScrapManagement' },
       { name: 'Planification', icon: BarChart3, page: 'ProductionPlans' },
       { name: 'Produits Finis', icon: Package, page: 'Products' },
     ]
@@ -95,6 +105,12 @@ export default function Sidebar({ currentPage, collapsed, onToggle }) {
   const pagePermissions = {
     'Dashboard': 'dashboard',
     'Recipes': 'recipes',
+    'ManufacturingOrders': 'manufacturing_orders',
+    'JobCards': 'manufacturing_orders',
+    'Workstations': 'manufacturing_orders',
+    'Routings': 'manufacturing_orders',
+    'Subcontracting': 'manufacturing_orders',
+    'ScrapManagement': 'manufacturing_orders',
     'ProductionPlans': 'manufacturing_orders',
     'Products': 'products',
     'RawMaterials': 'products',
