@@ -123,7 +123,6 @@ export default function PhysicalInventory({ stockLevels, products, warehouses, l
 
       toast.success(`${itemsWithDiff.length} article(s) ajusté(s) avec succès`);
       setConfirmOpen(false);
-      setStep('setup');
       setPhysicalCounts({});
     } catch (err) {
       toast.error("Erreur lors des ajustements");
