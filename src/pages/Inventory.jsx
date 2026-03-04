@@ -33,7 +33,8 @@ import {
   ArrowDownRight,
   ArrowUpRight,
   History,
-  ScanLine
+  ScanLine,
+  ClipboardList
 } from 'lucide-react';
 import BarcodeScanner from '@/components/barcode/BarcodeScanner';
 import EmptyBox from '@/components/illustrations/EmptyBox';
