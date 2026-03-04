@@ -60,6 +60,7 @@ const modules = [
     id: 'inventory',
     label: 'Inventaire',
     items: [
+      { name: 'Stock & Mouvements', icon: Boxes, page: 'Inventory' },
       { name: 'Matières Premières', icon: Boxes, page: 'RawMaterials' },
       { name: 'Entrepôts', icon: Building2, page: 'Warehouses' },
       { name: 'Traçabilité Lots', icon: Layers, page: 'LotTracking' },
