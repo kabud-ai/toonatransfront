@@ -294,6 +294,9 @@ export default function Inventory() {
         <TabsList className="bg-slate-100 dark:bg-slate-800">
           <TabsTrigger value="levels">{t('inventory.stockLevels')}</TabsTrigger>
           <TabsTrigger value="movements">{t('inventory.movements')}</TabsTrigger>
+          <TabsTrigger value="physical">
+            <ClipboardList className="h-4 w-4 mr-1" />Inventaire Physique
+          </TabsTrigger>
         </TabsList>
         
         <TabsContent value="levels" className="mt-4">
@@ -314,6 +317,15 @@ export default function Inventory() {
             loading={loadingMovements}
             emptyMessage="No movements recorded"
             emptyIcon={History}
+          />
+        </TabsContent>
+
+        <TabsContent value="physical" className="mt-4">
+          <PhysicalInventory
+            stockLevels={stockLevels}
+            products={products}
+            warehouses={warehouses}
+            loadingLevels={loadingLevels}
           />
         </TabsContent>
       </Tabs>
