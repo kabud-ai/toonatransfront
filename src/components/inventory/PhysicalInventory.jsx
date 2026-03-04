@@ -71,14 +71,8 @@ export default function PhysicalInventory({ stockLevels, products, warehouses, l
     })
     .filter(s => s.diff !== 0);
 
-  const handleStartCounting = () => {
-    setPhysicalCounts({});
-    setStep('counting');
-  };
-
   const handleReset = () => {
     setPhysicalCounts({});
-    setStep('setup');
     setSearchTerm('');
   };
 
