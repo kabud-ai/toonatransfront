@@ -26,11 +26,9 @@ import { format } from 'date-fns';
 export default function PhysicalInventory({ stockLevels, products, warehouses, loadingLevels }) {
   const queryClient = useQueryClient();
 
-  // Step: 'setup' -> 'counting' -> 'review'
-  const [step, setStep] = useState('setup');
   const [selectedWarehouseId, setSelectedWarehouseId] = useState('all');
   const [sessionDate] = useState(new Date());
-  const [physicalCounts, setPhysicalCounts] = useState({});  // key: stockLevel.id -> physical qty
+  const [physicalCounts, setPhysicalCounts] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [adjustNotes, setAdjustNotes] = useState('');
