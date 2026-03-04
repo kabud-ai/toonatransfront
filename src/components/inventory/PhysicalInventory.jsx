@@ -141,49 +141,6 @@ export default function PhysicalInventory({ stockLevels, products, warehouses, l
     return <Badge className="bg-slate-100 text-slate-600">0</Badge>;
   };
 
-  // ─── STEP: SETUP ───────────────────────────────────────────────────────────
-  if (step === 'setup') {
-    return (
-      <div className="space-y-6">
-        <Card className="border-dashed border-2 border-sky-200 dark:border-sky-800">
-          <CardContent className="pt-8 pb-8 text-center space-y-4">
-            <div className="h-16 w-16 rounded-2xl bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center mx-auto">
-              <ClipboardList className="h-8 w-8 text-sky-600" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold">Prise d'Inventaire Physique</h3>
-              <p className="text-sm text-slate-500 mt-1 max-w-md mx-auto">
-                Comparez les quantités système avec les quantités réelles en entrepôt et générez automatiquement les mouvements d'ajustement.
-              </p>
-            </div>
-            <div className="flex items-center justify-center gap-4 flex-wrap">
-              <div className="space-y-1 text-left">
-                <Label>Filtrer par Entrepôt</Label>
-                <Select value={selectedWarehouseId} onValueChange={setSelectedWarehouseId}>
-                  <SelectTrigger className="w-52">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Tous les entrepôts</SelectItem>
-                    {warehouses.map(w => <SelectItem key={w.id} value={w.id}>{w.name}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div className="pt-2">
-              <p className="text-xs text-slate-400 mb-3">{stockLevels.length} article(s) en stock · Date : {format(sessionDate, 'dd/MM/yyyy HH:mm')}</p>
-              <Button onClick={handleStartCounting} className="bg-sky-600 hover:bg-sky-700 px-8">
-                <ClipboardList className="h-4 w-4 mr-2" />
-                Commencer la Prise d'Inventaire
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // ─── STEP: COUNTING ────────────────────────────────────────────────────────
   return (
     <div className="space-y-4">
       {/* Top bar */}
