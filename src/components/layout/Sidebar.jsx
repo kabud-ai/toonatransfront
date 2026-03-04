@@ -117,6 +117,7 @@ export default function Sidebar({ currentPage, collapsed, onToggle }) {
     'RawMaterials': 'products',
     'Warehouses': 'warehouses',
     'LotTracking': 'lots',
+    'Inventory': 'inventory',
     'StockAlerts': 'inventory',
     'PurchaseOrders': 'purchase_orders',
     'GoodsReceipts': 'goods_receipts',
