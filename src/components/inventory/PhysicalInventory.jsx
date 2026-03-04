@@ -145,7 +145,16 @@ export default function PhysicalInventory({ stockLevels, products, warehouses, l
     <div className="space-y-4">
       {/* Top bar */}
       <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          <Select value={selectedWarehouseId} onValueChange={setSelectedWarehouseId}>
+            <SelectTrigger className="w-48">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous les entrepôts</SelectItem>
+              {warehouses.map(w => <SelectItem key={w.id} value={w.id}>{w.name}</SelectItem>)}
+            </SelectContent>
+          </Select>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <Input
@@ -164,7 +173,7 @@ export default function PhysicalInventory({ stockLevels, products, warehouses, l
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={handleReset}>
-            <RotateCcw className="h-4 w-4 mr-1" />Recommencer
+            <RotateCcw className="h-4 w-4 mr-1" />Réinitialiser
           </Button>
           <Button
             size="sm"
