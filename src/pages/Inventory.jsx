@@ -38,6 +38,7 @@ import {
 import BarcodeScanner from '@/components/barcode/BarcodeScanner';
 import EmptyBox from '@/components/illustrations/EmptyBox';
 import { useTranslation } from '@/components/i18n/LanguageContext';
+import PhysicalInventory from '@/components/inventory/PhysicalInventory';
 
 export default function Inventory() {
   const { t } = useTranslation();

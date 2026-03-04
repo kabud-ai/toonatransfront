@@ -54,6 +54,7 @@ import Documentation from './pages/Documentation';
 import Equipment from './pages/Equipment';
 import GoodsReceipts from './pages/GoodsReceipts';
 import Inventory from './pages/Inventory';
+import JobCards from './pages/JobCards';
 import LotTracking from './pages/LotTracking';
 import MaintenanceOrders from './pages/MaintenanceOrders';
 import ManufacturingOrders from './pages/ManufacturingOrders';
@@ -67,9 +68,12 @@ import RecipeHistory from './pages/RecipeHistory';
 import RecipeTypes from './pages/RecipeTypes';
 import Recipes from './pages/Recipes';
 import RolesManagement from './pages/RolesManagement';
+import Routings from './pages/Routings';
+import ScrapManagement from './pages/ScrapManagement';
 import Settings from './pages/Settings';
 import Sites from './pages/Sites';
 import StockAlerts from './pages/StockAlerts';
+import Subcontracting from './pages/Subcontracting';
 import SupplierCatalog from './pages/SupplierCatalog';
 import Suppliers from './pages/Suppliers';
 import Unities from './pages/Unities';
@@ -77,10 +81,6 @@ import UserManagement from './pages/UserManagement';
 import UserProfile from './pages/UserProfile';
 import Warehouses from './pages/Warehouses';
 import Workstations from './pages/Workstations';
-import JobCards from './pages/JobCards';
-import ScrapManagement from './pages/ScrapManagement';
-import Routings from './pages/Routings';
-import Subcontracting from './pages/Subcontracting';
 import __Layout from './Layout.jsx';
 
 
@@ -92,6 +92,7 @@ export const PAGES = {
     "Equipment": Equipment,
     "GoodsReceipts": GoodsReceipts,
     "Inventory": Inventory,
+    "JobCards": JobCards,
     "LotTracking": LotTracking,
     "MaintenanceOrders": MaintenanceOrders,
     "ManufacturingOrders": ManufacturingOrders,
@@ -105,9 +106,12 @@ export const PAGES = {
     "RecipeTypes": RecipeTypes,
     "Recipes": Recipes,
     "RolesManagement": RolesManagement,
+    "Routings": Routings,
+    "ScrapManagement": ScrapManagement,
     "Settings": Settings,
     "Sites": Sites,
     "StockAlerts": StockAlerts,
+    "Subcontracting": Subcontracting,
     "SupplierCatalog": SupplierCatalog,
     "Suppliers": Suppliers,
     "Unities": Unities,
@@ -115,10 +119,6 @@ export const PAGES = {
     "UserProfile": UserProfile,
     "Warehouses": Warehouses,
     "Workstations": Workstations,
-    "JobCards": JobCards,
-    "ScrapManagement": ScrapManagement,
-    "Routings": Routings,
-    "Subcontracting": Subcontracting,
 }
 
 export const pagesConfig = {
