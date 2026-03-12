@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/select';
 import { Package, Plus, Eye, Pencil, Trash2, Barcode, Upload, X, Download, FileUp, CheckCircle, Boxes, Layers } from 'lucide-react';
 import { toast } from 'sonner';
-import { exportToCSV, parseCSV } from '@/components/utils/excelExport';
+import { exportToExcel, parseCSV } from '@/components/utils/excelExport';
 
 export default function Products() {
   const queryClient = useQueryClient();
