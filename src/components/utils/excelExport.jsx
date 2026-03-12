@@ -1,4 +1,44 @@
 // Utility functions for Excel/CSV export
+
+export const exportToExcel = (data, filename) => {
+  if (!data || data.length === 0) {
+    alert('Aucune donnée à exporter');
+    return;
+  }
+
+  const headers = Object.keys(data[0]);
+
+  const escapeXml = (value) => {
+    if (value === null || value === undefined) return '';
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  };
+
+  const headerRow = headers.map(h => `<th>${escapeXml(h)}</th>`).join('');
+  const rows = data.map(row =>
+    `<tr>${headers.map(h => `<td>${escapeXml(row[h])}</td>`).join('')}</tr>`
+  ).join('');
+
+  const html = `
+    <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+    <head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Export</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>
+    <body><table border="1"><thead><tr>${headerRow}</tr></thead><tbody>${rows}</tbody></table></body>
+    </html>`;
+
+  const blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `${filename}.xls`;
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 export const exportToCSV = (data, filename) => {
   if (!data || data.length === 0) {
     alert('Aucune donnée à exporter');
