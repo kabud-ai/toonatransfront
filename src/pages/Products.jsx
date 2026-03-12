@@ -87,7 +87,7 @@ export default function Products() {
       'Description': p.description || '',
       'Créé le': p.created_date
     }));
-    exportToCSV(exportData, 'produits_export');
+    exportToExcel(exportData, 'produits_export');
     toast.success('Export réussi');
   };
 
