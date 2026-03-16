@@ -135,6 +135,11 @@ export default function ManufacturingOrders() {
     }
   };
 
+  const statusLabels = {
+    confirmed: 'Confirmé', planned: 'Planifié', in_progress: 'En cours',
+    quality_check: 'Contrôle Qualité', completed: 'Terminé'
+  };
+
   const updateStatus = (order, newStatus) => {
     const updates = { status: newStatus };
     if (newStatus === 'in_progress' && !order.actual_start_date) {
@@ -145,6 +150,7 @@ export default function ManufacturingOrders() {
       updates.quantity_produced = order.quantity;
     }
     updateMutation.mutate({ id: order.id, data: updates });
+    toast.success(`Statut mis à jour : ${statusLabels[newStatus] || newStatus}`);
   };
 
   // Stats
