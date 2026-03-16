@@ -68,7 +68,9 @@ export default function ManufacturingOrders() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['manufacturingOrders'] });
       setDialogOpen(false);
-    }
+      toast.success('Ordre de fabrication créé avec succès');
+    },
+    onError: () => toast.error('Erreur lors de la création')
   });
 
   const updateMutation = useMutation({
@@ -77,13 +79,29 @@ export default function ManufacturingOrders() {
       queryClient.invalidateQueries({ queryKey: ['manufacturingOrders'] });
       setDialogOpen(false);
       setDetailsOpen(false);
-    }
+      toast.success('Ordre mis à jour');
+    },
+    onError: () => toast.error('Erreur lors de la mise à jour')
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id) => base44.entities.ManufacturingOrder.delete(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['manufacturingOrders'] })
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['manufacturingOrders'] });
+      toast.success('Ordre supprimé');
+    },
+    onError: () => toast.error('Erreur lors de la suppression')
   });
+
+  const duplicateOrder = (order) => {
+    const { id, created_date, updated_date, order_number, actual_start_date, actual_end_date, quantity_produced, ...rest } = order;
+    createMutation.mutate({
+      ...rest,
+      order_number: generateOrderNumber(),
+      status: 'draft',
+      quantity_produced: 0,
+    });
+  };
 
   const generateOrderNumber = () => {
     const year = new Date().getFullYear();
