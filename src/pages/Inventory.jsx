@@ -421,12 +421,17 @@ export default function Inventory() {
               <Label>Notes</Label>
               <Input name="notes" />
             </div>
+            {warehouses.length === 0 && (
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                ⚠️ Aucun entrepôt configuré. Veuillez d'abord créer un entrepôt.
+              </div>
+            )}
             <div className="flex justify-end gap-3 pt-4">
               <Button type="button" variant="outline" onClick={() => setMovementDialogOpen(false)}>
-                Cancel
+                Annuler
               </Button>
-              <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700">
-                Record Movement
+              <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700" disabled={warehouses.length === 0}>
+                Enregistrer
               </Button>
             </div>
           </form>
