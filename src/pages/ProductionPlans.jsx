@@ -32,7 +32,8 @@ import {
   Clock,
   Factory,
   DollarSign,
-  Download
+  Download,
+  Copy
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';

@@ -68,25 +68,41 @@ export default function Inventory() {
     queryFn: () => base44.entities.Warehouse.list()
   });
 
+  const [movementWarehouseId, setMovementWarehouseId] = useState('');
+
+  // Set default warehouse when warehouses load
+  React.useEffect(() => {
+    if (warehouses.length > 0 && !movementWarehouseId) {
+      setMovementWarehouseId(warehouses[0].id);
+    }
+  }, [warehouses]);
+
   const createMovement = useMutation({
     mutationFn: (data) => base44.entities.StockMovement.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['stockMovements'] });
       queryClient.invalidateQueries({ queryKey: ['stockLevels'] });
       setMovementDialogOpen(false);
-    }
+      toast.success('Mouvement de stock enregistré');
+    },
+    onError: () => toast.error('Erreur lors de l\'enregistrement du mouvement')
   });
 
   const handleMovementSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const product = products.find(p => p.id === formData.get('product_id'));
-    const warehouse = warehouses.find(w => w.id === formData.get('warehouse_id'));
+    const warehouse = warehouses.find(w => w.id === movementWarehouseId);
     
+    if (!movementWarehouseId) {
+      toast.error('Veuillez sélectionner un entrepôt');
+      return;
+    }
+
     createMovement.mutate({
       product_id: formData.get('product_id'),
       product_name: product?.name,
-      warehouse_id: formData.get('warehouse_id'),
+      warehouse_id: movementWarehouseId,
       warehouse_name: warehouse?.name,
       type: formData.get('type'),
       quantity: parseFloat(formData.get('quantity')),

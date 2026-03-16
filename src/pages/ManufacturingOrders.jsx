@@ -34,10 +34,12 @@ import {
   Pause,
   CheckCircle,
   Clock,
-  AlertCircle
+  AlertCircle,
+  Copy
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { useTranslation } from '@/components/i18n/LanguageContext';
+import { toast } from 'sonner';
 
 export default function ManufacturingOrders() {
   const { t } = useTranslation();
