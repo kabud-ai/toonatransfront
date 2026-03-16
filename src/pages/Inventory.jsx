@@ -409,12 +409,12 @@ export default function Inventory() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Lot Number</Label>
+                <Label>N° de Lot</Label>
                 <Input name="lot_number" />
               </div>
               <div className="space-y-2">
-                <Label>Reference</Label>
-                <Input name="reference" placeholder="PO-001, MO-001..." />
+                <Label>Référence</Label>
+                <Input name="reference" placeholder="BC-001, OF-001..." />
               </div>
             </div>
             <div className="space-y-2">
