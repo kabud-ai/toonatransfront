@@ -387,16 +387,18 @@ export default function Inventory() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Movement Type *</Label>
+                <Label>Type de Mouvement *</Label>
                 <Select name="type" required>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="in">Stock In</SelectItem>
-                    <SelectItem value="out">Stock Out</SelectItem>
-                    <SelectItem value="adjustment">Adjustment</SelectItem>
-                    <SelectItem value="transfer">Transfer</SelectItem>
+                    <SelectItem value="in">Entrée Stock</SelectItem>
+                    <SelectItem value="out">Sortie Stock</SelectItem>
+                    <SelectItem value="adjustment">Ajustement</SelectItem>
+                    <SelectItem value="transfer">Transfert</SelectItem>
+                    <SelectItem value="production">Production</SelectItem>
+                    <SelectItem value="consumption">Consommation</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
