@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import PageHeader from '@/components/common/PageHeader';
@@ -36,6 +36,7 @@ import {
   ScanLine,
   ClipboardList
 } from 'lucide-react';
+import { toast } from 'sonner';
 import BarcodeScanner from '@/components/barcode/BarcodeScanner';
 import EmptyBox from '@/components/illustrations/EmptyBox';
 import { useTranslation } from '@/components/i18n/LanguageContext';
