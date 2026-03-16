@@ -183,7 +183,8 @@ export default function ProductionPlans() {
   ];
 
   const actions = [
-    { label: 'Voir', icon: Eye, onClick: (row) => { setSelectedPlan(row); setDetailsOpen(true); } }
+    { label: 'Voir', icon: Eye, onClick: (row) => { setSelectedPlan(row); setDetailsOpen(true); } },
+    { label: 'Dupliquer', icon: Copy, onClick: (row) => duplicatePlan(row) }
   ];
 
   return (
