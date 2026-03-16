@@ -330,6 +330,11 @@ export default function ProductionPlans() {
                 </Card>
               </div>
 
+              <div className="flex flex-wrap gap-2 pb-3 border-b">
+                <Button variant="outline" size="sm" onClick={() => { duplicatePlan(selectedPlan); setDetailsOpen(false); }}>
+                  <Copy className="h-4 w-4 mr-2" />Dupliquer ce Plan
+                </Button>
+              </div>
               <div className="flex flex-wrap gap-2 pt-4 border-t">
                 {selectedPlan.status === 'planned' && (
                   <Button 
