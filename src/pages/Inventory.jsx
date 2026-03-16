@@ -349,10 +349,10 @@ export default function Inventory() {
       </Tabs>
 
       {/* Movement Dialog */}
-      <Dialog open={movementDialogOpen} onOpenChange={setMovementDialogOpen}>
+      <Dialog open={movementDialogOpen} onOpenChange={(open) => { setMovementDialogOpen(open); if (open && warehouses.length > 0) setMovementWarehouseId(warehouses[0].id); }}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Record Stock Movement</DialogTitle>
+            <DialogTitle>Enregistrer un Mouvement de Stock</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleMovementSubmit} className="space-y-4">
             <div className="space-y-2">
