@@ -356,15 +356,15 @@ export default function Inventory() {
           </DialogHeader>
           <form onSubmit={handleMovementSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label>Product *</Label>
+              <Label>Produit *</Label>
               <Select name="product_id" required>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select product" />
+                  <SelectValue placeholder="Sélectionner un produit" />
                 </SelectTrigger>
                 <SelectContent>
                   {products.map((p) => (
                     <SelectItem key={p.id} value={p.id}>
-                      {p.sku} - {p.name}
+                      {p.sku ? `${p.sku} - ` : ''}{p.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
