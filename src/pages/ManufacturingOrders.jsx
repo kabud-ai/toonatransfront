@@ -217,17 +217,22 @@ export default function ManufacturingOrders() {
 
   const actions = [
     { 
-      label: 'View Details', 
+      label: 'Voir Détails', 
       icon: Eye, 
       onClick: (row) => { setSelectedOrder(row); setDetailsOpen(true); } 
     },
     { 
-      label: 'Edit', 
+      label: 'Modifier', 
       icon: Pencil, 
       onClick: (row) => { setSelectedOrder(row); setDialogOpen(true); } 
     },
+    {
+      label: 'Dupliquer',
+      icon: Copy,
+      onClick: (row) => duplicateOrder(row)
+    },
     { 
-      label: 'Delete', 
+      label: 'Supprimer', 
       icon: Trash2, 
       onClick: (row) => deleteMutation.mutate(row.id), 
       destructive: true 
