@@ -72,7 +72,7 @@ export default function Inventory() {
   const [movementWarehouseId, setMovementWarehouseId] = useState('');
 
   // Set default warehouse when warehouses load
-  React.useEffect(() => {
+  useEffect(() => {
     if (warehouses.length > 0 && !movementWarehouseId) {
       setMovementWarehouseId(warehouses[0].id);
     }
@@ -371,15 +371,15 @@ export default function Inventory() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Warehouse *</Label>
-              <Select name="warehouse_id" required>
+              <Label>Entrepôt *</Label>
+              <Select value={movementWarehouseId} onValueChange={setMovementWarehouseId} required>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select warehouse" />
+                  <SelectValue placeholder="Sélectionner un entrepôt" />
                 </SelectTrigger>
                 <SelectContent>
                   {warehouses.map((w) => (
                     <SelectItem key={w.id} value={w.id}>
-                      {w.name}
+                      {w.name} {w.id === warehouses[0]?.id ? '(Principal)' : ''}
                     </SelectItem>
                   ))}
                 </SelectContent>
