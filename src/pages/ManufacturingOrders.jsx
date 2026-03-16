@@ -457,6 +457,14 @@ export default function ManufacturingOrders() {
                 />
               </div>
 
+              <div className="flex flex-wrap gap-2 pb-2 border-b">
+                <Button variant="outline" size="sm" onClick={() => { duplicateOrder(selectedOrder); setDetailsOpen(false); }}>
+                  <Copy className="h-4 w-4 mr-2" />Dupliquer
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => { setDetailsOpen(false); setDialogOpen(true); }}>
+                  <Pencil className="h-4 w-4 mr-2" />Modifier
+                </Button>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {selectedOrder.status === 'draft' && (
                   <Button onClick={() => updateStatus(selectedOrder, 'confirmed')}>
