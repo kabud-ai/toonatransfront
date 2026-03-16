@@ -66,7 +66,8 @@ export default function ProductionPlans() {
       queryClient.invalidateQueries({ queryKey: ['productionPlans'] });
       setDialogOpen(false);
       toast.success('Production planifiée avec succès');
-    }
+    },
+    onError: () => toast.error('Erreur lors de la création')
   });
 
   const updateMutation = useMutation({
@@ -75,8 +76,18 @@ export default function ProductionPlans() {
       queryClient.invalidateQueries({ queryKey: ['productionPlans'] });
       setDetailsOpen(false);
       toast.success('Plan mis à jour');
-    }
+    },
+    onError: () => toast.error('Erreur lors de la mise à jour')
   });
+
+  const duplicatePlan = (plan) => {
+    const { id, created_date, updated_date, status, completed_date, ...rest } = plan;
+    createMutation.mutate({
+      ...rest,
+      status: 'planned',
+      planned_date: '',
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
