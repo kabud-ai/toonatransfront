@@ -13,8 +13,9 @@ import { Card } from '@/components/ui/card';
 import DataTable from '@/components/common/DataTable';
 import PageHeader from '@/components/common/PageHeader';
 import StatCard from '@/components/common/StatCard';
-import { ShoppingBag, Plus, Trash2, Eye, CheckCircle, Truck, XCircle, Package, DollarSign, TrendingUp, ClipboardList } from 'lucide-react';
+import { ShoppingBag, Plus, Trash2, Eye, CheckCircle, Truck, XCircle, Package, DollarSign, TrendingUp, ClipboardList, Printer } from 'lucide-react';
 import { format } from 'date-fns';
+import InvoicePrint from '@/components/sales/InvoicePrint';
 
 const STATUS_CONFIG = {
   draft: { label: 'Brouillon', color: 'bg-slate-100 text-slate-700' },
@@ -206,6 +207,11 @@ export default function SalesOrders() {
       label: 'Voir détails',
       icon: Eye,
       onClick: (row) => { setSelectedOrder(row); setDetailsOpen(true); }
+    },
+    {
+      label: 'Imprimer facture',
+      icon: Printer,
+      onClick: (row) => { setSelectedOrder(row); setTimeout(() => document.getElementById('invoice-print-btn')?.click(), 100); }
     },
     {
       label: 'Confirmer livraison',
@@ -401,9 +407,14 @@ export default function SalesOrders() {
         {selectedOrder && (
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <ShoppingBag className="h-5 w-5 text-sky-600" />
-                {selectedOrder.order_number}
+              <DialogTitle className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <ShoppingBag className="h-5 w-5 text-sky-600" />
+                  {selectedOrder.order_number}
+                </div>
+                <span id="invoice-print-btn">
+                  <InvoicePrint order={selectedOrder} />
+                </span>
               </DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
