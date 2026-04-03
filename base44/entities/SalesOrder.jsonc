@@ -1,0 +1,139 @@
+{
+  "name": "SalesOrder",
+  "type": "object",
+  "properties": {
+    "order_number": {
+      "type": "string",
+      "description": "Num\u00e9ro de commande de vente"
+    },
+    "customer_name": {
+      "type": "string",
+      "description": "Nom du client"
+    },
+    "customer_email": {
+      "type": "string",
+      "description": "Email du client"
+    },
+    "customer_phone": {
+      "type": "string",
+      "description": "T\u00e9l\u00e9phone du client"
+    },
+    "customer_address": {
+      "type": "string",
+      "description": "Adresse de livraison"
+    },
+    "warehouse_id": {
+      "type": "string",
+      "description": "Entrep\u00f4t source"
+    },
+    "warehouse_name": {
+      "type": "string",
+      "description": "Nom de l'entrep\u00f4t"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "confirmed",
+        "shipped",
+        "delivered",
+        "cancelled"
+      ],
+      "default": "draft",
+      "description": "Statut de la commande"
+    },
+    "order_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de commande"
+    },
+    "delivery_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de livraison pr\u00e9vue"
+    },
+    "lines": {
+      "type": "array",
+      "description": "Lignes de commande",
+      "items": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string"
+          },
+          "product_name": {
+            "type": "string"
+          },
+          "product_sku": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "unit_price": {
+            "type": "number"
+          },
+          "discount": {
+            "type": "number",
+            "default": 0
+          },
+          "total_price": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "subtotal": {
+      "type": "number",
+      "default": 0,
+      "description": "Sous-total HT"
+    },
+    "tax_rate": {
+      "type": "number",
+      "default": 0,
+      "description": "Taux de taxe (%)"
+    },
+    "tax_amount": {
+      "type": "number",
+      "default": 0,
+      "description": "Montant de la taxe"
+    },
+    "total_amount": {
+      "type": "number",
+      "default": 0,
+      "description": "Total TTC"
+    },
+    "payment_status": {
+      "type": "string",
+      "enum": [
+        "unpaid",
+        "partial",
+        "paid"
+      ],
+      "default": "unpaid",
+      "description": "Statut de paiement"
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": [
+        "cash",
+        "bank_transfer",
+        "check",
+        "credit_card",
+        "other"
+      ],
+      "description": "Mode de paiement"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes"
+    }
+  },
+  "required": [
+    "customer_name",
+    "warehouse_id"
+  ]
+}

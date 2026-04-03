@@ -29,7 +29,8 @@ import {
   ClipboardList,
   GitBranch,
   PackageX,
-  Hammer
+  Hammer,
+  ShoppingBag
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -65,6 +66,13 @@ const modules = [
       { name: 'Entrepôts', icon: Building2, page: 'Warehouses' },
       { name: 'Traçabilité Lots', icon: Layers, page: 'LotTracking' },
       { name: 'Alertes Stock', icon: AlertTriangle, page: 'StockAlerts' },
+    ]
+  },
+  {
+    id: 'sales',
+    label: 'Ventes',
+    items: [
+      { name: 'Commandes de Vente', icon: ShoppingBag, page: 'SalesOrders' },
     ]
   },
   {
@@ -124,6 +132,7 @@ export default function Sidebar({ currentPage, collapsed, onToggle }) {
     'Suppliers': 'suppliers',
     'SupplierCatalog': 'suppliers',
     'AutoReplenishment': 'purchase_orders',
+    'SalesOrders': 'inventory',
     'Unities': 'settings',
     'RecipeTypes': 'recipes',
     'RecipeHistory': 'recipes',

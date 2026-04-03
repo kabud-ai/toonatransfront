@@ -81,6 +81,7 @@ import UserManagement from './pages/UserManagement';
 import UserProfile from './pages/UserProfile';
 import Warehouses from './pages/Warehouses';
 import Workstations from './pages/Workstations';
+import SalesOrders from './pages/SalesOrders';
 import __Layout from './Layout.jsx';
 
 
@@ -119,6 +120,7 @@ export const PAGES = {
     "UserProfile": UserProfile,
     "Warehouses": Warehouses,
     "Workstations": Workstations,
+    "SalesOrders": SalesOrders,
 }
 
 export const pagesConfig = {
