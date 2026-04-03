@@ -23,7 +23,10 @@ import {
   XCircle,
   Timer,
   Download,
-  FileText
+  FileText,
+  ShoppingBag,
+  DollarSign,
+  Truck
 } from 'lucide-react';
 import { downloadAuditReport } from '@/components/utils/auditReport';
 import { toast } from 'sonner';
@@ -102,6 +105,11 @@ export default function Dashboard() {
   const { data: purchaseOrders = [] } = useQuery({
     queryKey: ['purchaseOrders'],
     queryFn: () => base44.entities.PurchaseOrder.list('-created_date', 20)
+  });
+
+  const { data: salesOrders = [] } = useQuery({
+    queryKey: ['salesOrders'],
+    queryFn: () => base44.entities.SalesOrder.list('-created_date', 50)
   });
 
   // Load user and role
@@ -186,6 +194,11 @@ export default function Dashboard() {
 
   const scheduledMaintenance = maintenanceOrders.filter(m => m.status === 'scheduled').length;
   const pendingPurchases = purchaseOrders.filter(p => ['draft', 'sent'].includes(p.status)).length;
+
+  // Sales stats
+  const totalRevenue = salesOrders.filter(o => o.status === 'delivered').reduce((s, o) => s + (o.total_amount || 0), 0);
+  const pendingSalesOrders = salesOrders.filter(o => ['confirmed', 'shipped'].includes(o.status)).length;
+  const deliveredSalesOrders = salesOrders.filter(o => o.status === 'delivered').length;
 
   const handleDownloadAuditReport = async () => {
     const auditData = {
@@ -331,6 +344,29 @@ export default function Dashboard() {
             />
           </div>
 
+          {/* Sales Stats Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <StatCard
+              title="Chiffre d'affaires (livré)"
+              value={`${totalRevenue.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €`}
+              icon={DollarSign}
+              color="green"
+            />
+            <StatCard
+              title="Commandes de vente en cours"
+              value={pendingSalesOrders}
+              subtitle={`${deliveredSalesOrders} livraison(s) effectuée(s)`}
+              icon={ShoppingBag}
+              color="amber"
+            />
+            <StatCard
+              title="Total commandes de vente"
+              value={salesOrders.length}
+              icon={Truck}
+              color="sky"
+            />
+          </div>
+
           {/* Charts Row */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Production Chart */}
@@ -421,6 +457,69 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Recent Sales Orders */}
+          <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-medium flex items-center gap-2">
+                  <ShoppingBag className="h-5 w-5 text-sky-500" />
+                  Dernières commandes de vente
+                </CardTitle>
+                <Link to="/SalesOrders">
+                  <Button variant="ghost" size="sm" className="text-sky-600 hover:text-sky-700">
+                    Voir tout <ArrowRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </Link>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-slate-100 dark:border-slate-800">
+                      <th className="text-left py-2 text-slate-500 font-medium">N° Commande</th>
+                      <th className="text-left py-2 text-slate-500 font-medium">Client</th>
+                      <th className="text-right py-2 text-slate-500 font-medium">Total</th>
+                      <th className="text-right py-2 text-slate-500 font-medium">Statut</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {salesOrders.slice(0, 5).map((order) => {
+                      const STATUS_COLORS = {
+                        draft: 'bg-slate-100 text-slate-700',
+                        confirmed: 'bg-blue-100 text-blue-700',
+                        shipped: 'bg-amber-100 text-amber-700',
+                        delivered: 'bg-green-100 text-green-700',
+                        cancelled: 'bg-red-100 text-red-700',
+                      };
+                      const STATUS_LABELS = {
+                        draft: 'Brouillon', confirmed: 'Confirmé', shipped: 'Expédié',
+                        delivered: 'Livré', cancelled: 'Annulé',
+                      };
+                      return (
+                        <tr key={order.id} className="border-b border-slate-50 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                          <td className="py-2 font-medium text-slate-800 dark:text-slate-200">{order.order_number}</td>
+                          <td className="py-2 text-slate-600 dark:text-slate-400">{order.customer_name}</td>
+                          <td className="py-2 text-right font-medium text-slate-800 dark:text-slate-200">
+                            {(order.total_amount || 0).toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
+                          </td>
+                          <td className="py-2 text-right">
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[order.status] || 'bg-slate-100 text-slate-700'}`}>
+                              {STATUS_LABELS[order.status] || order.status}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                    {salesOrders.length === 0 && (
+                      <tr><td colSpan={4} className="py-8 text-center text-slate-400">Aucune commande de vente</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Activity Row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
