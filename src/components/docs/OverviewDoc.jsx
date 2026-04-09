@@ -6,7 +6,7 @@ export default function OverviewDoc() {
     <div className="prose prose-slate max-w-none dark:prose-invert">
       <h1>📋 Documentation Système ERP</h1>
       
-      <p>Système ERP complet pour la gestion de production industrielle intégrant la fabrication, l'inventaire, les achats, la qualité, la maintenance et l'administration.</p>
+      <p>Système ERP complet pour la gestion de production industrielle intégrant la fabrication, l'inventaire, les ventes, les achats, la qualité, la maintenance et l'administration.</p>
 
       <h2>🏗️ Modules Principaux</h2>
       
@@ -18,6 +18,10 @@ export default function OverviewDoc() {
         <div className="border rounded-lg p-4">
           <h3 className="font-semibold text-lg mb-2">📦 Inventaire</h3>
           <p className="text-sm text-muted-foreground">Gestion stocks, traçabilité lots, alertes</p>
+        </div>
+        <div className="border rounded-lg p-4">
+          <h3 className="font-semibold text-lg mb-2">💰 Ventes</h3>
+          <p className="text-sm text-muted-foreground">Commandes clients, facturation, suivi livraisons</p>
         </div>
         <div className="border rounded-lg p-4">
           <h3 className="font-semibold text-lg mb-2">🛒 Achats</h3>
@@ -91,7 +95,7 @@ export default function OverviewDoc() {
 
       <hr />
       <p className="text-sm text-muted-foreground">
-        <strong>Version</strong> : 1.0.0 | <strong>Dernière MAJ</strong> : Janvier 2026
+        <strong>Version</strong> : 1.1.0 | <strong>Dernière MAJ</strong> : Avril 2026
       </p>
     </div>
   );

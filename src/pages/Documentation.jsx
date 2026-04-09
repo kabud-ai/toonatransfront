@@ -21,6 +21,8 @@ import ArchitectureDoc from '@/components/docs/ArchitectureDoc';
 import AdminGuideDoc from '@/components/docs/AdminGuideDoc';
 import ProductionGuideDoc from '@/components/docs/ProductionGuideDoc';
 import InventoryGuideDoc from '@/components/docs/InventoryGuideDoc';
+import SalesGuideDoc from '@/components/docs/SalesGuideDoc';
+import { TrendingUp } from 'lucide-react';
 
 export default function Documentation() {
   const { t } = useTranslation();
@@ -31,7 +33,8 @@ export default function Documentation() {
     architecture: { component: ArchitectureDoc, icon: Code, title: 'Architecture Technique' },
     admin: { component: AdminGuideDoc, icon: Shield, title: 'Guide Administrateur' },
     production: { component: ProductionGuideDoc, icon: Factory, title: 'Guide Production' },
-    inventory: { component: InventoryGuideDoc, icon: Package, title: 'Guide Inventaire' }
+    inventory: { component: InventoryGuideDoc, icon: Package, title: 'Guide Inventaire' },
+    sales: { component: SalesGuideDoc, icon: TrendingUp, title: 'Guide Ventes' }
   };
 
   const currentDoc = docs[selectedDoc];
@@ -103,7 +106,14 @@ export default function Documentation() {
                 <Package className="h-4 w-4 mr-2" />
                 Inventaire
               </Button>
-
+              <Button
+                variant={selectedDoc === 'sales' ? 'secondary' : 'ghost'}
+                className="w-full justify-start text-sm"
+                onClick={() => setSelectedDoc('sales')}
+              >
+                <TrendingUp className="h-4 w-4 mr-2" />
+                Ventes
+              </Button>
             </div>
           </CardContent>
         </Card>
