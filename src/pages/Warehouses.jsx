@@ -34,8 +34,11 @@ import {
   TrendingUp,
   DollarSign,
   CheckCircle,
-  PieChart
+  PieChart,
+  FileUp
 } from 'lucide-react';
+import { parseCSV } from '@/components/utils/excelExport';
+import { toast } from 'sonner';
 import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
 import { useTranslation } from '@/components/i18n/LanguageContext';
 
@@ -45,6 +48,38 @@ export default function Warehouses() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedWarehouse, setSelectedWarehouse] = useState(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
+
+  const handleImport = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const data = parseCSV(event.target.result);
+        let count = 0;
+        for (const row of data) {
+          if (row.Nom && row.Code) {
+            await base44.entities.Warehouse.create({
+              name: row.Nom,
+              code: row.Code,
+              type: row['Type'] || 'raw_materials',
+              adress: row['Adresse'] || '',
+              description: row['Description'] || '',
+              is_active: true
+            });
+            count++;
+          }
+        }
+        queryClient.invalidateQueries({ queryKey: ['warehouses'] });
+        setImportDialogOpen(false);
+        toast.success(`${count} entrepôts importés`);
+      } catch (error) {
+        toast.error("Erreur lors de l'import");
+      }
+    };
+    reader.readAsText(file);
+  };
 
   const { data: warehouses = [], isLoading } = useQuery({
     queryKey: ['warehouses'],
@@ -214,13 +249,19 @@ export default function Warehouses() {
         icon={Building2}
         breadcrumbs={[t('nav.inventory'), t('nav.warehouses')]}
         actions={
-          <Button 
-            className="bg-indigo-600 hover:bg-indigo-700"
-            onClick={() => { setSelectedWarehouse(null); setDialogOpen(true); }}
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            {t('warehouses.addWarehouse')}
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setImportDialogOpen(true)}>
+              <FileUp className="h-4 w-4 mr-2" />
+              Import CSV
+            </Button>
+            <Button 
+              className="bg-indigo-600 hover:bg-indigo-700"
+              onClick={() => { setSelectedWarehouse(null); setDialogOpen(true); }}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              {t('warehouses.addWarehouse')}
+            </Button>
+          </div>
         }
       />
 
@@ -338,6 +379,22 @@ export default function Warehouses() {
               </Button>
             </div>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Import Dialog */}
+      <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Importer des Entrepôts (CSV)</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Colonnes attendues : <code className="bg-slate-100 dark:bg-slate-800 px-1 rounded">Nom</code>, <code className="bg-slate-100 dark:bg-slate-800 px-1 rounded">Code</code>, Type, Adresse, Description
+            </p>
+            <p className="text-xs text-slate-500">Types valides : raw_materials, finished_goods, wip, quarantine, spare_parts</p>
+            <Input type="file" accept=".csv" onChange={handleImport} className="cursor-pointer" />
+          </div>
         </DialogContent>
       </Dialog>
 

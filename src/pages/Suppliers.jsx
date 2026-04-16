@@ -24,9 +24,12 @@ import {
   Star,
   Mail,
   Phone,
-  MapPin
+  MapPin,
+  FileUp
 } from 'lucide-react';
 import { useTranslation } from '@/components/i18n/LanguageContext';
+import { parseCSV } from '@/components/utils/excelExport';
+import { toast } from 'sonner';
 
 export default function Suppliers() {
   const { t } = useTranslation();
@@ -34,6 +37,43 @@ export default function Suppliers() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedSupplier, setSelectedSupplier] = useState(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
+
+  const handleImport = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const data = parseCSV(event.target.result);
+        let count = 0;
+        for (const row of data) {
+          if (row.Nom && row.Code) {
+            await base44.entities.Supplier.create({
+              name: row.Nom,
+              code: row.Code,
+              contact_name: row['Contact'] || '',
+              email: row['Email'] || '',
+              phone: row['Téléphone'] || '',
+              address: row['Adresse'] || '',
+              city: row['Ville'] || '',
+              country: row['Pays'] || '',
+              payment_terms: row['Conditions Paiement'] || '',
+              lead_time_days: parseInt(row['Délai (jours)']) || 7,
+              is_active: true
+            });
+            count++;
+          }
+        }
+        queryClient.invalidateQueries({ queryKey: ['suppliers'] });
+        setImportDialogOpen(false);
+        toast.success(`${count} fournisseurs importés`);
+      } catch (error) {
+        toast.error("Erreur lors de l'import");
+      }
+    };
+    reader.readAsText(file);
+  };
 
   const { data: suppliers = [], isLoading } = useQuery({
     queryKey: ['suppliers'],
@@ -182,13 +222,19 @@ export default function Suppliers() {
         icon={Truck}
         breadcrumbs={[t('nav.purchasing'), t('nav.suppliers')]}
         actions={
-          <Button 
-            className="bg-indigo-600 hover:bg-indigo-700"
-            onClick={() => { setSelectedSupplier(null); setDialogOpen(true); }}
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            {t('suppliers.addSupplier')}
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setImportDialogOpen(true)}>
+              <FileUp className="h-4 w-4 mr-2" />
+              Import CSV
+            </Button>
+            <Button 
+              className="bg-indigo-600 hover:bg-indigo-700"
+              onClick={() => { setSelectedSupplier(null); setDialogOpen(true); }}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              {t('suppliers.addSupplier')}
+            </Button>
+          </div>
         }
       />
 
@@ -311,6 +357,21 @@ export default function Suppliers() {
               </Button>
             </div>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Import Dialog */}
+      <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Importer des Fournisseurs (CSV)</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Colonnes attendues : <code className="bg-slate-100 dark:bg-slate-800 px-1 rounded">Nom</code>, <code className="bg-slate-100 dark:bg-slate-800 px-1 rounded">Code</code>, Contact, Email, Téléphone, Adresse, Ville, Pays, Conditions Paiement, Délai (jours)
+            </p>
+            <Input type="file" accept=".csv" onChange={handleImport} className="cursor-pointer" />
+          </div>
         </DialogContent>
       </Dialog>
 
