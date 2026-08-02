@@ -1,0 +1,407 @@
+{
+  "name": "Role",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom du r\u00f4le"
+    },
+    "code": {
+      "type": "string",
+      "description": "Code unique du r\u00f4le"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description du r\u00f4le"
+    },
+    "permissions": {
+      "type": "object",
+      "description": "Permissions du r\u00f4le",
+      "properties": {
+        "dashboard": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        },
+        "products": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "recipes": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "bom": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "manufacturing_orders": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            },
+            "execute": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "inventory": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            },
+            "adjust": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "warehouses": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "lots": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            },
+            "quarantine": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "suppliers": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "purchase_orders": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            },
+            "approve": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "goods_receipts": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "quality": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            },
+            "approve": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "maintenance": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "equipment": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "users": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "roles": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "create": {
+              "type": "boolean",
+              "default": false
+            },
+            "edit": {
+              "type": "boolean",
+              "default": false
+            },
+            "delete": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        "reports": {
+          "type": "object",
+          "properties": {
+            "view": {
+              "type": "boolean",
+              "default": false
+            },
+            "financial": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
+    },
+    "is_system_role": {
+      "type": "boolean",
+      "default": false,
+      "description": "R\u00f4le syst\u00e8me non modifiable"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "code"
+  ]
+}

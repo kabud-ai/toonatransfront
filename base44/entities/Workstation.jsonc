@@ -1,0 +1,72 @@
+{
+  "name": "Workstation",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom du poste de travail"
+    },
+    "code": {
+      "type": "string",
+      "description": "Code unique"
+    },
+    "description": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "machine",
+        "human",
+        "hybrid"
+      ],
+      "default": "machine",
+      "description": "Type de poste"
+    },
+    "department": {
+      "type": "string",
+      "description": "D\u00e9partement / atelier"
+    },
+    "location": {
+      "type": "string",
+      "description": "Localisation physique"
+    },
+    "capacity_per_hour": {
+      "type": "number",
+      "default": 1,
+      "description": "Capacit\u00e9 par heure"
+    },
+    "cost_per_hour": {
+      "type": "number",
+      "default": 0,
+      "description": "Co\u00fbt horaire (\u20ac/h)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "maintenance",
+        "inactive"
+      ],
+      "default": "active"
+    },
+    "working_hours_start": {
+      "type": "string",
+      "default": "08:00",
+      "description": "Heure d\u00e9but"
+    },
+    "working_hours_end": {
+      "type": "string",
+      "default": "17:00",
+      "description": "Heure fin"
+    },
+    "operator": {
+      "type": "string",
+      "description": "Op\u00e9rateur principal"
+    }
+  },
+  "required": [
+    "name",
+    "code"
+  ]
+}

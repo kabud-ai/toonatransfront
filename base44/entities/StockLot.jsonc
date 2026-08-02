@@ -1,0 +1,45 @@
+{
+  "name": "StockLot",
+  "type": "object",
+  "properties": {
+    "rawmaterial_id": {
+      "type": "string",
+      "description": "ID de la mati\u00e8re premi\u00e8re"
+    },
+    "rawmaterial_name": {
+      "type": "string",
+      "description": "Nom de la mati\u00e8re premi\u00e8re"
+    },
+    "bought_quantity": {
+      "type": "number",
+      "description": "Quantit\u00e9 achet\u00e9e"
+    },
+    "remaining_quantity": {
+      "type": "number",
+      "description": "Quantit\u00e9 restante"
+    },
+    "used_quantity": {
+      "type": "number",
+      "default": 0,
+      "description": "Quantit\u00e9 utilis\u00e9e"
+    },
+    "unity": {
+      "type": "string",
+      "description": "Unit\u00e9 de mesure"
+    },
+    "price": {
+      "type": "number",
+      "description": "Prix total d'achat"
+    },
+    "bought_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date et heure d'achat"
+    }
+  },
+  "required": [
+    "rawmaterial_id",
+    "bought_quantity",
+    "price"
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "name": "ProductLot",
+  "type": "object",
+  "properties": {
+    "lot_number": {
+      "type": "string",
+      "description": "Num\u00e9ro de lot unique"
+    },
+    "product_id": {
+      "type": "string",
+      "description": "ID du produit"
+    },
+    "product_name": {
+      "type": "string",
+      "description": "Nom du produit"
+    },
+    "warehouse_id": {
+      "type": "string",
+      "description": "ID de l'entrep\u00f4t"
+    },
+    "warehouse_name": {
+      "type": "string",
+      "description": "Nom de l'entrep\u00f4t"
+    },
+    "initial_quantity": {
+      "type": "number",
+      "description": "Quantit\u00e9 initiale"
+    },
+    "current_quantity": {
+      "type": "number",
+      "description": "Quantit\u00e9 actuelle disponible"
+    },
+    "reserved_quantity": {
+      "type": "number",
+      "default": 0,
+      "description": "Quantit\u00e9 r\u00e9serv\u00e9e"
+    },
+    "unit_cost": {
+      "type": "number",
+      "description": "Co\u00fbt unitaire"
+    },
+    "manufacturing_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de fabrication"
+    },
+    "expiry_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date d'expiration"
+    },
+    "received_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de r\u00e9ception"
+    },
+    "supplier_id": {
+      "type": "string",
+      "description": "ID du fournisseur (pour mati\u00e8res premi\u00e8res)"
+    },
+    "supplier_name": {
+      "type": "string",
+      "description": "Nom du fournisseur"
+    },
+    "manufacturing_order_id": {
+      "type": "string",
+      "description": "ID de l'ordre de fabrication (pour produits finis)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "reserved",
+        "quarantine",
+        "expired",
+        "depleted"
+      ],
+      "default": "available",
+      "description": "Statut du lot"
+    },
+    "quality_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "conditional"
+      ],
+      "description": "Statut qualit\u00e9"
+    },
+    "quality_inspection_id": {
+      "type": "string",
+      "description": "ID de l'inspection qualit\u00e9"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes sur le lot"
+    },
+    "traceability_data": {
+      "type": "object",
+      "description": "Donn\u00e9es de tra\u00e7abilit\u00e9 additionnelles"
+    }
+  },
+  "required": [
+    "lot_number",
+    "product_id",
+    "initial_quantity"
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "name": "Routing",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom de la gamme"
+    },
+    "code": {
+      "type": "string",
+      "description": "Code unique"
+    },
+    "product_id": {
+      "type": "string"
+    },
+    "product_name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "obsolete"
+      ],
+      "default": "draft"
+    },
+    "total_planned_hours": {
+      "type": "number",
+      "default": 0
+    },
+    "operations": {
+      "type": "array",
+      "description": "S\u00e9quence d'op\u00e9rations",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sequence": {
+            "type": "integer"
+          },
+          "operation_name": {
+            "type": "string"
+          },
+          "workstation_id": {
+            "type": "string"
+          },
+          "workstation_name": {
+            "type": "string"
+          },
+          "planned_hours": {
+            "type": "number"
+          },
+          "cost_per_hour": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "code"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "name": "SupplierCatalog",
+  "type": "object",
+  "properties": {
+    "supplier_id": {
+      "type": "string",
+      "description": "ID du fournisseur"
+    },
+    "supplier_name": {
+      "type": "string",
+      "description": "Nom du fournisseur"
+    },
+    "product_id": {
+      "type": "string",
+      "description": "ID du produit"
+    },
+    "product_name": {
+      "type": "string",
+      "description": "Nom du produit"
+    },
+    "supplier_sku": {
+      "type": "string",
+      "description": "R\u00e9f\u00e9rence fournisseur du produit"
+    },
+    "unit_price": {
+      "type": "number",
+      "description": "Prix unitaire"
+    },
+    "currency": {
+      "type": "string",
+      "default": "USD",
+      "description": "Devise"
+    },
+    "min_order_quantity": {
+      "type": "number",
+      "default": 1,
+      "description": "Quantit\u00e9 minimum de commande"
+    },
+    "lead_time_days": {
+      "type": "number",
+      "default": 7,
+      "description": "D\u00e9lai de livraison en jours"
+    },
+    "is_preferred": {
+      "type": "boolean",
+      "default": false,
+      "description": "Fournisseur pr\u00e9f\u00e9r\u00e9 pour ce produit"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Catalogue actif"
+    },
+    "last_price_update": {
+      "type": "string",
+      "format": "date",
+      "description": "Derni\u00e8re mise \u00e0 jour du prix"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes"
+    }
+  },
+  "required": [
+    "supplier_id",
+    "product_id",
+    "unit_price"
+  ]
+}

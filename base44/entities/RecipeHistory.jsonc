@@ -1,0 +1,52 @@
+{
+  "name": "RecipeHistory",
+  "type": "object",
+  "properties": {
+    "recipe_id": {
+      "type": "string",
+      "description": "ID de la recette modifi\u00e9e"
+    },
+    "recipe_title": {
+      "type": "string",
+      "description": "Titre de la recette"
+    },
+    "recipe_code": {
+      "type": "string",
+      "description": "Code de la recette"
+    },
+    "recipe_version": {
+      "type": "string",
+      "description": "Version de la recette"
+    },
+    "changed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date et heure du changement"
+    },
+    "changed_by": {
+      "type": "string",
+      "description": "Email de l'utilisateur qui a fait le changement"
+    },
+    "change_type": {
+      "type": "string",
+      "enum": [
+        "create",
+        "update",
+        "delete"
+      ],
+      "description": "Type de changement"
+    },
+    "previous_data": {
+      "type": "object",
+      "description": "Donn\u00e9es avant modification"
+    },
+    "new_data": {
+      "type": "object",
+      "description": "Nouvelles donn\u00e9es"
+    }
+  },
+  "required": [
+    "recipe_id",
+    "change_type"
+  ]
+}

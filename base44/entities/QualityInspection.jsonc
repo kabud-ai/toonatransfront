@@ -1,0 +1,99 @@
+{
+  "name": "QualityInspection",
+  "type": "object",
+  "properties": {
+    "inspection_number": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "incoming",
+        "in_process",
+        "final",
+        "periodic"
+      ],
+      "default": "in_process"
+    },
+    "reference_type": {
+      "type": "string",
+      "enum": [
+        "manufacturing_order",
+        "purchase_order",
+        "stock"
+      ]
+    },
+    "reference_id": {
+      "type": "string"
+    },
+    "product_id": {
+      "type": "string"
+    },
+    "product_name": {
+      "type": "string"
+    },
+    "lot_number": {
+      "type": "string"
+    },
+    "quantity_inspected": {
+      "type": "number"
+    },
+    "quantity_passed": {
+      "type": "number"
+    },
+    "quantity_failed": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "in_progress",
+        "passed",
+        "failed",
+        "conditional"
+      ],
+      "default": "pending"
+    },
+    "inspector": {
+      "type": "string"
+    },
+    "inspection_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "checkpoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "specification": {
+            "type": "string"
+          },
+          "measured_value": {
+            "type": "string"
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "non_conformity_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "inspection_number",
+    "type"
+  ]
+}

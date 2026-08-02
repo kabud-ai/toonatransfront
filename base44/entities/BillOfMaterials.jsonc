@@ -1,0 +1,94 @@
+{
+  "name": "BillOfMaterials",
+  "type": "object",
+  "properties": {
+    "product_id": {
+      "type": "string",
+      "description": "The finished product this BOM produces"
+    },
+    "name": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string",
+      "default": "1.0"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "obsolete"
+      ],
+      "default": "draft"
+    },
+    "quantity_produced": {
+      "type": "number",
+      "default": 1
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string"
+          },
+          "product_name": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "cost": {
+            "type": "number"
+          },
+          "is_optional": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sequence": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "work_center": {
+            "type": "string"
+          },
+          "duration_minutes": {
+            "type": "number"
+          },
+          "labor_cost": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "total_material_cost": {
+      "type": "number",
+      "default": 0
+    },
+    "total_labor_cost": {
+      "type": "number",
+      "default": 0
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "product_id",
+    "name"
+  ]
+}

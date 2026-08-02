@@ -1,0 +1,32 @@
+{
+  "name": "Site",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "manager_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "code"
+  ]
+}

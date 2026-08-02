@@ -1,0 +1,65 @@
+{
+  "name": "Company",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Company name"
+    },
+    "logo_url": {
+      "type": "string",
+      "description": "Company logo URL"
+    },
+    "industry": {
+      "type": "string",
+      "enum": [
+        "agro_food",
+        "textile",
+        "electronics",
+        "chemical",
+        "cosmetic",
+        "mechanical",
+        "general"
+      ],
+      "default": "general"
+    },
+    "primary_color": {
+      "type": "string",
+      "default": "#4F46E5"
+    },
+    "timezone": {
+      "type": "string",
+      "default": "UTC"
+    },
+    "currency": {
+      "type": "string",
+      "default": "USD"
+    },
+    "date_format": {
+      "type": "string",
+      "default": "YYYY-MM-DD"
+    },
+    "enabled_modules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "dashboard",
+        "bom",
+        "inventory",
+        "manufacturing",
+        "quality",
+        "purchasing",
+        "maintenance"
+      ]
+    },
+    "settings": {
+      "type": "object",
+      "description": "Custom company settings"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "name": "MaintenanceOrder",
+  "type": "object",
+  "properties": {
+    "order_number": {
+      "type": "string"
+    },
+    "equipment_id": {
+      "type": "string"
+    },
+    "equipment_name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "preventive",
+        "corrective",
+        "predictive",
+        "emergency"
+      ],
+      "default": "preventive"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "normal",
+        "high",
+        "critical"
+      ],
+      "default": "normal"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "in_progress",
+        "waiting_parts",
+        "completed",
+        "cancelled"
+      ],
+      "default": "scheduled"
+    },
+    "description": {
+      "type": "string"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "assigned_to": {
+      "type": "string"
+    },
+    "downtime_hours": {
+      "type": "number"
+    },
+    "labor_cost": {
+      "type": "number"
+    },
+    "parts_used": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string"
+          },
+          "product_name": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "cost": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "parts_cost": {
+      "type": "number"
+    },
+    "total_cost": {
+      "type": "number"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "checklist": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "string"
+          },
+          "completed": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "order_number",
+    "equipment_id",
+    "type"
+  ]
+}

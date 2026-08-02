@@ -1,0 +1,21 @@
+{
+  "name": "RecipeType",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom du type de recette"
+    },
+    "slug": {
+      "type": "string",
+      "description": "Slug g\u00e9n\u00e9r\u00e9 automatiquement"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description du type de recette"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

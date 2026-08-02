@@ -1,0 +1,90 @@
+{
+  "name": "LotMovement",
+  "type": "object",
+  "properties": {
+    "lot_number": {
+      "type": "string",
+      "description": "Num\u00e9ro de lot"
+    },
+    "product_id": {
+      "type": "string",
+      "description": "ID du produit"
+    },
+    "product_name": {
+      "type": "string",
+      "description": "Nom du produit"
+    },
+    "warehouse_id": {
+      "type": "string",
+      "description": "ID de l'entrep\u00f4t"
+    },
+    "movement_type": {
+      "type": "string",
+      "enum": [
+        "in",
+        "out",
+        "transfer",
+        "adjustment",
+        "production",
+        "consumption",
+        "quarantine",
+        "release"
+      ],
+      "description": "Type de mouvement"
+    },
+    "quantity": {
+      "type": "number",
+      "description": "Quantit\u00e9 d\u00e9plac\u00e9e"
+    },
+    "quantity_before": {
+      "type": "number",
+      "description": "Quantit\u00e9 avant le mouvement"
+    },
+    "quantity_after": {
+      "type": "number",
+      "description": "Quantit\u00e9 apr\u00e8s le mouvement"
+    },
+    "reference_type": {
+      "type": "string",
+      "enum": [
+        "purchase_order",
+        "manufacturing_order",
+        "sales_order",
+        "quality_inspection",
+        "adjustment",
+        "transfer"
+      ],
+      "description": "Type de r\u00e9f\u00e9rence"
+    },
+    "reference_id": {
+      "type": "string",
+      "description": "ID de la r\u00e9f\u00e9rence"
+    },
+    "from_warehouse_id": {
+      "type": "string",
+      "description": "Entrep\u00f4t d'origine (pour transferts)"
+    },
+    "to_warehouse_id": {
+      "type": "string",
+      "description": "Entrep\u00f4t de destination (pour transferts)"
+    },
+    "unit_cost": {
+      "type": "number",
+      "description": "Co\u00fbt unitaire"
+    },
+    "performed_by": {
+      "type": "string",
+      "description": "Utilisateur ayant effectu\u00e9 le mouvement"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes sur le mouvement"
+    }
+  },
+  "required": [
+    "lot_number",
+    "product_id",
+    "movement_type",
+    "quantity"
+  ]
+}

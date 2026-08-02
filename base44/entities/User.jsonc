@@ -1,0 +1,53 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "custom_role_id": {
+      "type": "string",
+      "description": "ID du r\u00f4le personnalis\u00e9 assign\u00e9"
+    },
+    "custom_role_name": {
+      "type": "string",
+      "description": "Nom du r\u00f4le personnalis\u00e9"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Num\u00e9ro de t\u00e9l\u00e9phone"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Poste/Fonction"
+    },
+    "department": {
+      "type": "string",
+      "description": "D\u00e9partement"
+    },
+    "avatar_url": {
+      "type": "string",
+      "description": "URL de la photo de profil"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Compte actif"
+    },
+    "last_login": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Derni\u00e8re connexion"
+    },
+    "site_id": {
+      "type": "string",
+      "description": "Site de rattachement"
+    },
+    "site_name": {
+      "type": "string",
+      "description": "Nom du site"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes internes"
+    }
+  },
+  "required": []
+}

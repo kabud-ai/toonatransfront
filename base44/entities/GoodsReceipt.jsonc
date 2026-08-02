@@ -1,0 +1,103 @@
+{
+  "name": "GoodsReceipt",
+  "type": "object",
+  "properties": {
+    "receipt_number": {
+      "type": "string",
+      "description": "Num\u00e9ro du bon de r\u00e9ception"
+    },
+    "purchase_order_id": {
+      "type": "string",
+      "description": "ID du bon de commande"
+    },
+    "purchase_order_number": {
+      "type": "string",
+      "description": "Num\u00e9ro du bon de commande"
+    },
+    "supplier_id": {
+      "type": "string",
+      "description": "ID du fournisseur"
+    },
+    "supplier_name": {
+      "type": "string",
+      "description": "Nom du fournisseur"
+    },
+    "warehouse_id": {
+      "type": "string",
+      "description": "ID de l'entrep\u00f4t de r\u00e9ception"
+    },
+    "warehouse_name": {
+      "type": "string",
+      "description": "Nom de l'entrep\u00f4t"
+    },
+    "receipt_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date de r\u00e9ception"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "confirmed",
+        "quality_check",
+        "accepted",
+        "rejected"
+      ],
+      "default": "draft",
+      "description": "Statut du bon de r\u00e9ception"
+    },
+    "lines": {
+      "type": "array",
+      "description": "Lignes du bon de r\u00e9ception",
+      "items": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string"
+          },
+          "product_name": {
+            "type": "string"
+          },
+          "ordered_quantity": {
+            "type": "number"
+          },
+          "received_quantity": {
+            "type": "number"
+          },
+          "accepted_quantity": {
+            "type": "number"
+          },
+          "rejected_quantity": {
+            "type": "number"
+          },
+          "lot_number": {
+            "type": "string"
+          },
+          "unit_cost": {
+            "type": "number"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "received_by": {
+      "type": "string",
+      "description": "Re\u00e7u par"
+    },
+    "quality_inspection_id": {
+      "type": "string",
+      "description": "ID de l'inspection qualit\u00e9"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes"
+    }
+  },
+  "required": [
+    "receipt_number",
+    "purchase_order_id"
+  ]
+}

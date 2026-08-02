@@ -1,0 +1,45 @@
+{
+  "name": "DashboardPreference",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email de l'utilisateur"
+    },
+    "widgets": {
+      "type": "array",
+      "description": "Liste des widgets activ\u00e9s",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "position": {
+            "type": "integer"
+          },
+          "size": {
+            "type": "string",
+            "enum": [
+              "small",
+              "medium",
+              "large"
+            ],
+            "default": "medium"
+          }
+        }
+      }
+    },
+    "layout": {
+      "type": "string",
+      "enum": [
+        "grid",
+        "list"
+      ],
+      "default": "grid"
+    }
+  },
+  "required": [
+    "user_email"
+  ]
+}

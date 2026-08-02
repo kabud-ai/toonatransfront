@@ -1,0 +1,67 @@
+{
+  "name": "ScrapEntry",
+  "type": "object",
+  "properties": {
+    "entry_number": {
+      "type": "string"
+    },
+    "manufacturing_order_id": {
+      "type": "string"
+    },
+    "manufacturing_order_number": {
+      "type": "string"
+    },
+    "job_card_id": {
+      "type": "string"
+    },
+    "product_id": {
+      "type": "string"
+    },
+    "product_name": {
+      "type": "string"
+    },
+    "workstation_id": {
+      "type": "string"
+    },
+    "workstation_name": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "number",
+      "default": 0
+    },
+    "unit": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "defect",
+        "breakage",
+        "overflow",
+        "quality_reject",
+        "other"
+      ],
+      "default": "defect"
+    },
+    "reason_detail": {
+      "type": "string"
+    },
+    "unit_cost": {
+      "type": "number",
+      "default": 0
+    },
+    "total_cost": {
+      "type": "number",
+      "default": 0
+    },
+    "entry_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "product_id",
+    "quantity"
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "name": "ManufacturingOrder",
+  "type": "object",
+  "properties": {
+    "order_number": {
+      "type": "string"
+    },
+    "product_id": {
+      "type": "string"
+    },
+    "product_name": {
+      "type": "string"
+    },
+    "bom_id": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "number"
+    },
+    "quantity_produced": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "confirmed",
+        "planned",
+        "in_progress",
+        "quality_check",
+        "completed",
+        "cancelled"
+      ],
+      "default": "draft"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "normal",
+        "high",
+        "urgent"
+      ],
+      "default": "normal"
+    },
+    "planned_start_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "planned_end_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actual_start_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actual_end_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "site_id": {
+      "type": "string"
+    },
+    "work_center": {
+      "type": "string"
+    },
+    "assigned_to": {
+      "type": "string"
+    },
+    "lot_number": {
+      "type": "string"
+    },
+    "estimated_cost": {
+      "type": "number"
+    },
+    "actual_cost": {
+      "type": "number"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "operations_progress": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "operation_name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "started_at": {
+            "type": "string"
+          },
+          "completed_at": {
+            "type": "string"
+          },
+          "operator": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "order_number",
+    "product_id",
+    "quantity"
+  ]
+}

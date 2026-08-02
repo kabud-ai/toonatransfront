@@ -1,0 +1,85 @@
+{
+  "name": "Equipment",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "machine",
+        "tool",
+        "vehicle",
+        "measuring",
+        "other"
+      ],
+      "default": "machine"
+    },
+    "site_id": {
+      "type": "string"
+    },
+    "work_center": {
+      "type": "string"
+    },
+    "manufacturer": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "serial_number": {
+      "type": "string"
+    },
+    "purchase_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "warranty_end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "operational",
+        "maintenance",
+        "repair",
+        "offline",
+        "retired"
+      ],
+      "default": "operational"
+    },
+    "last_maintenance_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "next_maintenance_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "maintenance_frequency_days": {
+      "type": "number"
+    },
+    "operating_hours": {
+      "type": "number",
+      "default": 0
+    },
+    "specifications": {
+      "type": "object"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "code"
+  ]
+}

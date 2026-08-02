@@ -1,0 +1,56 @@
+{
+  "name": "ProductionPlan",
+  "type": "object",
+  "properties": {
+    "product_id": {
+      "type": "string",
+      "description": "ID du produit \u00e0 fabriquer"
+    },
+    "product_name": {
+      "type": "string",
+      "description": "Nom du produit"
+    },
+    "recipe_id": {
+      "type": "string",
+      "description": "ID de la recette utilis\u00e9e"
+    },
+    "recipe_title": {
+      "type": "string",
+      "description": "Titre de la recette"
+    },
+    "quantity": {
+      "type": "number",
+      "description": "Quantit\u00e9 pr\u00e9vue \u00e0 produire"
+    },
+    "cost": {
+      "type": "number",
+      "description": "Co\u00fbt estim\u00e9 de production"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "in_progress",
+        "completed",
+        "cancelled"
+      ],
+      "default": "planned",
+      "description": "Statut de la planification"
+    },
+    "planned_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de production pr\u00e9vue"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date de fin de production"
+    }
+  },
+  "required": [
+    "product_id",
+    "recipe_id",
+    "quantity"
+  ]
+}

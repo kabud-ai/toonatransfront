@@ -1,0 +1,28 @@
+{
+  "name": "Warehouse",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "adress": {
+      "type": "string",
+      "description": "Adresse compl\u00e8te de l'entrep\u00f4t"
+    },
+    "group_id": {
+      "type": "string",
+      "description": "ID du groupe propri\u00e9taire"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description de l'entrep\u00f4t"
+    }
+  },
+  "required": [
+    "name",
+    "code"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "name": "Group",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom du groupe/entreprise"
+    },
+    "code": {
+      "type": "string",
+      "description": "Code unique du groupe"
+    },
+    "activity_sector": {
+      "type": "string",
+      "description": "Secteur d'activit\u00e9"
+    },
+    "subscription_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "trial",
+        "expired"
+      ],
+      "default": "trial",
+      "description": "Statut de l'abonnement"
+    },
+    "subscription_plan": {
+      "type": "string",
+      "enum": [
+        "basic",
+        "standard",
+        "premium"
+      ],
+      "default": "basic",
+      "description": "Plan d'abonnement"
+    },
+    "max_users": {
+      "type": "integer",
+      "default": 1,
+      "description": "Nombre maximum d'utilisateurs autoris\u00e9s"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "code"
+  ]
+}

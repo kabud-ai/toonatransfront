@@ -1,0 +1,87 @@
+{
+  "name": "SubcontractingOrder",
+  "type": "object",
+  "properties": {
+    "order_number": {
+      "type": "string"
+    },
+    "supplier_id": {
+      "type": "string"
+    },
+    "supplier_name": {
+      "type": "string"
+    },
+    "product_id": {
+      "type": "string"
+    },
+    "product_name": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "number"
+    },
+    "unit": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "sent",
+        "in_progress",
+        "completed",
+        "cancelled"
+      ],
+      "default": "draft"
+    },
+    "planned_start": {
+      "type": "string",
+      "format": "date"
+    },
+    "planned_end": {
+      "type": "string",
+      "format": "date"
+    },
+    "actual_delivery": {
+      "type": "string",
+      "format": "date"
+    },
+    "unit_cost": {
+      "type": "number",
+      "default": 0
+    },
+    "total_cost": {
+      "type": "number",
+      "default": 0
+    },
+    "components_sent": {
+      "type": "array",
+      "description": "Composants envoy\u00e9s au sous-traitant",
+      "items": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string"
+          },
+          "product_name": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "supplier_id",
+    "product_id",
+    "quantity"
+  ]
+}
